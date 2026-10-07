@@ -31,7 +31,7 @@ No frameworks, no dependencies at build time. `tools/build.mjs` (plain Node) tur
 ```
 site.config.js        settings + the LAUNCHED switch
 src/
-  index.html          home (hero climb, tree, chapters, waitlist form)
+  index.html          home: hero climb → growing tree → what is OT → chapters → about → where → FAQ → form
   services/ about/ faq/ privacy/
   404.html thanks.html
   _partials/          head, header, footer, next-step block, icons
@@ -40,6 +40,8 @@ src/
 tools/
   build.mjs           src → dist
   shoot.mjs           screenshots at 1366 / 390 / 320px + overflow & JS-error check
+  hero-frames.mjs     8 frames through the hero climb at a given size
+  sheet.mjs           contact sheet of screenshots
 netlify.toml          build command + publish dir + security headers
 ```
 
@@ -51,6 +53,18 @@ npx playwright install chromium # once
 npm run build                   # → dist/
 npm run shots                   # build + screenshots of the home page → screenshots/
 node tools/shoot.mjs /,/services/,/faq/ screenshots/check   # specific pages
+node tools/hero-frames.mjs 390 844 screenshots/hero        # hero climb frames
+```
+
+## Home hero ("The Climb")
+
+Built from the `hero-blocks-v2` prototype: 3D blocks drop in on scroll and a child climbs and plants a seedling, which hands over to the growing tree straight below.
+- Desktop: the blocks tilt with the mouse. Touch devices: a gentle automatic sway.
+- Tap, click or press Enter on a block to see its tooltip.
+- Mobile: headline → scene → caption. A "camera" starts close on the first block and pulls back as the stack grows, so there's no empty sky on load.
+- `prefers-reduced-motion`: shows the finished scene, with nothing moving.
+
+```bash
 ```
 
 ## Forms

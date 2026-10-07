@@ -4,31 +4,42 @@
 section{position:relative}
 
 /* ---------- HERO: the climb ---------- */
-.climb{height:460vh;position:relative}
-.climb .stage{position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));height:calc(100svh - var(--nav-h));display:grid;grid-template-columns:1fr 1.15fr;align-items:center;gap:2rem}
+.climb{height:520vh;position:relative}
+.climb .stage{position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));height:calc(100svh - var(--nav-h));display:grid;grid-template-columns:.9fr 1.25fr;align-items:center;gap:2rem}
 .climb h1{font-size:clamp(2.8rem,7vw,6.2rem)}
 .climb .lede{max-width:30ch;margin-top:1.4rem;font-size:1.15rem;color:var(--ink-soft)}
-.caption{margin-top:2.2rem;min-height:5.5rem;border-left:3px solid var(--ochre);padding-left:1rem}
-.caption .step{font-family:var(--hand);font-size:1.6rem;color:var(--terra-ink);line-height:1}
-.caption p{font-size:1rem;color:var(--ink);max-width:34ch}
-.scroll-hint{margin-top:1.6rem;display:flex;align-items:center;gap:.6rem;font-size:.85rem;color:var(--ink-soft)}
-.scroll-hint i{width:22px;height:34px;border:2px solid currentColor;border-radius:12px;position:relative}
-.scroll-hint i::after{content:"";position:absolute;left:50%;top:6px;width:4px;height:7px;margin-left:-2px;border-radius:2px;background:currentColor;animation:wheel 1.6s infinite}
-@keyframes wheel{to{transform:translateY(10px);opacity:0}}
-#scene{width:100%;height:auto;max-height:calc(100vh - 110px);overflow:visible}
-.meter{position:absolute;right:0;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px}
+.caption{margin-top:2rem;min-height:6rem;border-left:3px solid var(--ochre);padding-left:1rem}
+.caption .step{font-family:var(--hand);font-size:1.7rem;color:var(--terra-ink);line-height:1}
+.caption p{font-size:1rem;max-width:34ch;margin-top:.2rem}
+.hint{margin-top:1.2rem;font-size:.85rem;color:var(--ink-soft);display:flex;gap:1.2rem;flex-wrap:wrap}
+.hint span::before{content:"●";color:var(--ochre);margin-right:.4rem;font-size:.7em}
+@media(pointer:coarse){.hint .fine-only{display:none}}
+.scene-wrap{position:relative;height:100%;display:flex;align-items:center}
+#scene{width:100%;height:auto;max-height:calc(100vh - 100px);max-height:calc(100svh - 100px);overflow:visible;touch-action:pan-y}
+#scene .col{cursor:pointer;outline:none;transform-box:fill-box;transform-origin:50% 100%;transition:transform .35s cubic-bezier(.3,1.5,.5,1)}
+#scene .col:hover,#scene .col:focus-visible{transform:translateY(-10px)}
+#scene .col:focus-visible rect:first-of-type{stroke:var(--ink);stroke-width:3}
+#scene .col.wiggle{animation:wiggle .6s ease}
+@keyframes wiggle{0%,100%{transform:translateY(-10px) rotate(0)}25%{transform:translateY(-22px) rotate(-3deg)}60%{transform:translateY(-6px) rotate(2deg)}}
+.tip{position:absolute;left:0;top:0;pointer-events:none;background:var(--ink);color:var(--paper);font-size:.85rem;line-height:1.4;padding:.55rem .8rem;border-radius:12px;width:max-content;max-width:220px;opacity:0;transform:translate(-50%,-110%) scale(.96);transition:opacity .2s,transform .2s;z-index:5}
+.tip b{display:block;font-family:var(--display);font-weight:500;font-size:1.05rem;color:var(--ochre)}
+.tip.on{opacity:1;transform:translate(-50%,-120%) scale(1)}
+.meter{position:absolute;right:-8px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column-reverse;gap:8px}
 .meter span{width:6px;height:22px;border-radius:3px;background:color-mix(in srgb,var(--ink) 12%,transparent);transition:background .3s}
 .meter span.on{background:var(--terra)}
 @media(max-width:860px){
-  .climb{height:420vh}
-  .climb .stage{grid-template-columns:1fr;align-content:center;gap:.5rem;padding-top:1rem}
-  .climb .copy{order:2}
-  .climb h1{font-size:clamp(2.2rem,10vw,3.2rem)}
-  .climb .lede,.scroll-hint{display:none}
-  .caption{margin-top:.8rem;min-height:4.5rem}
-  #scene{max-height:48vh}
-  .meter{display:none}
+  .climb{height:460vh}
+  /* headline → scene → caption, packed to the top (no empty sky above) */
+  .climb .stage{grid-template-columns:1fr;align-content:start;gap:0;padding-top:clamp(1rem,3svh,2rem)}
+  .climb .copy{display:contents}
+  .climb .eyebrow{order:1}
+  .climb h1{order:2;font-size:clamp(2.1rem,10vw,3rem);margin-top:.3rem}
+  .climb .scene-wrap{order:3;height:auto;margin-top:.6rem}
+  .climb .caption{order:4;margin-top:.8rem;min-height:5.2rem;padding-right:60px}
+  .climb .lede,.climb .hint,.meter{display:none}
+  #scene{height:min(112vw,50svh);max-height:none;overflow:hidden}
 }
+@media(max-width:860px) and (max-height:700px){.climb .eyebrow{display:none}.caption{min-height:4.6rem}}
 
 /* ---------- WHAT IS OT ---------- */
 .what{padding:9rem 0 7rem}
