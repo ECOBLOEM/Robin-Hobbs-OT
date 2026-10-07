@@ -32,8 +32,10 @@ bodyClass: home
             <stop offset="1" stop-color="#000" stop-opacity=".10"/>
           </linearGradient>
           <radialGradient id="sunG"><stop offset="0" stop-color="#F8D27E"/><stop offset="1" stop-color="#E0A43A"/></radialGradient>
-          <linearGradient id="fadeG" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".12" stop-color="#fff"/><stop offset=".88" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><mask id="fade" maskUnits="userSpaceOnUse" x="-60" y="0" width="920" height="720"><rect x="-60" y="0" width="920" height="720" fill="url(#fadeG)"/></mask>
+          <linearGradient id="fadeG" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".12" stop-color="#fff"/><stop offset=".88" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><mask id="fade" maskUnits="userSpaceOnUse" x="-60" y="0" width="920" height="720"><rect id="fadeRect" x="0" y="0" width="800" height="720" fill="url(#fadeG)"/></mask>
           <linearGradient id="groundG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EDE4D3"/><stop offset="1" stop-color="#EDE4D3" stop-opacity="0"/></linearGradient>
+          <linearGradient id="topG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff"/></linearGradient>
+          <mask id="topFade" maskUnits="userSpaceOnUse" x="-300" y="-1200" width="1400" height="2400"><rect id="topFadeGrad" x="-300" y="0" width="1400" height="110" fill="url(#topG)"/><rect id="topFadeSolid" x="-300" y="110" width="1400" height="1200" fill="#fff"/></mask>
           <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>
         </defs>
         <g id="bg">
@@ -47,7 +49,7 @@ bodyClass: home
         <rect x="-60" y="640" width="920" height="80" fill="url(#groundG)"/>
         <path d="M-60 640 H860" stroke="#2B2620" stroke-width="2" stroke-linecap="round" opacity=".7"/></g></g>
         <g id="shadows"></g>
-        <g id="cols"></g>
+        <g id="cols" mask="url(#topFade)"></g>
         <g id="seed" opacity="0">
           <path id="stem" d="M0 0 C-2 -14 3 -26 0 -40" stroke="#2F4A3A" stroke-width="4" fill="none" stroke-linecap="round"/>
           <path id="leafL" d="M0 -30 C-18 -36 -26 -28 -26 -20 C-14 -18 -4 -22 0 -30Z" fill="#7E9C76"/>
@@ -88,12 +90,12 @@ bodyClass: home
       <p class="eyebrow">How therapy works</p>
       <h2 class="display">Growth you can <em>see.</em></h2>
       <ol id="steps">
-        <li><div><b>Listen &amp; assess</b><span>A full first session: history, function, what matters to you.</span></div></li>
-        <li><div><b>Set real-life goals</b><span>Clear, measurable goals — written together, in plain language.</span></div></li>
-        <li><div><b>Hands-on therapy</b><span>Targeted sessions built around those goals.</span></div></li>
+        <li><div><b>Listen &amp; assess</b><span>An unhurried first session: your history, how everyday life is going, and what matters most.</span></div></li>
+        <li><div><b>Set real-life goals</b><span>Clear, measurable goals, written together in plain language.</span></div></li>
+        <li><div><b>Hands-on therapy</b><span>Focused sessions built around those goals — at home, at school or at work.</span></div></li>
         <li><div><b>Practise at home</b><span>A simple home programme so progress doesn’t stop between visits.</span></div></li>
         <li><div><b>Measure &amp; adjust</b><span>Progress tracked session by session, and the plan adapts.</span></div></li>
-        <li><div><b>Independence</b><span>The goal was always to not need us anymore.</span></div></li>
+        <li><div><b>Independence</b><span>The goal was always that you won’t need therapy any more.</span></div></li>
       </ol>
     </div>
     <svg id="tree" viewBox="0 0 600 640" role="img" aria-label="A tree growing from a seedling to full bloom">
@@ -119,9 +121,9 @@ bodyClass: home
     <p class="eyebrow rv">What is occupational therapy?</p>
     <h2 class="display big rv" style="margin-top:1rem">Your “occupations” are simply <span>the things you do every day.</span> OT helps you do them again — or for the first time.</h2>
     <div class="cols">
-      <div class="rv"><h3>We look at the whole person</h3><p>Body, mind, routines and environment — not just the injury or the diagnosis.</p></div>
-      <div class="rv"><h3>We set goals that mean something</h3><p>Buttoning a school shirt. Holding a pen. Making a cup of tea after a stroke. Getting back to work.</p></div>
-      <div class="rv"><h3>We build skills step by step</h3><p>Play-based for children, practical and evidence-based for adults, with a plan to keep going at home.</p></div>
+      <div class="rv"><h3>The whole person</h3><p>OT looks at body, mind, routines and surroundings — not just the injury or the diagnosis.</p></div>
+      <div class="rv"><h3>Goals that mean something</h3><p>Buttoning a school shirt. Holding a pen. Making a cup of tea after a stroke. Getting back to work.</p></div>
+      <div class="rv"><h3>Skills, step by step</h3><p>Play-based for children, practical and evidence-based for adults — with a plan to keep going between sessions.</p></div>
     </div>
   </div>
 </section>
@@ -129,7 +131,7 @@ bodyClass: home
 <!-- ============ WHO ============ -->
 <section class="who" id="who">
   <div class="wrap">
-    <p class="eyebrow rv">Who we help</p>
+    <p class="eyebrow rv">Who Robin sees</p>
     <h2 class="display rv">Two chapters. One goal: independence.</h2>
 
     <article class="chapter rv">
@@ -137,7 +139,7 @@ bodyClass: home
       <h3>Children<small>little hands, big steps</small></h3>
       <div>
         <ul aria-label="Areas of paediatric therapy"><li>Fine motor &amp; handwriting</li><li>Sensory processing</li><li>School readiness</li><li>Developmental delay</li><li>Attention &amp; regulation</li><li>Play &amp; social skills</li><li>Self-care &amp; routines</li></ul>
-        <p>Paediatric therapy that feels like play. We work alongside parents and teachers so progress shows up at home and in the classroom.</p>
+        <p>Paediatric therapy that feels like play. Robin works alongside parents and teachers, so progress shows up at home and in the classroom.</p>
         <p class="training">Robin begins training in Sensory Integration in 2027.</p>
         <a class="more" href="/services/#children">More about therapy for children →</a>
       </div>
@@ -195,9 +197,9 @@ bodyClass: home
     <div class="card rv">
       {{> hills}}
       <div style="position:relative">
-        <p class="eyebrow" style="color:rgba(255,255,255,.85)">Where to find us</p>
-        <h2 class="display" style="margin-top:.6rem">We come to you.</h2>
-        <p style="margin-top:1rem">A mobile practice for the Waterberg. Therapy happens where life happens — at home, at school or at work — across {{areasSentence}}. {{roomsComing}}.</p>
+        <p class="eyebrow" style="color:rgba(255,255,255,.85)">Where to find Robin</p>
+        <h2 class="display" style="margin-top:.6rem">Therapy that comes to you.</h2>
+        <p style="margin-top:1rem">A mobile practice for the Waterberg. Therapy happens where everyday life happens — at home, at school or at work — across {{areasSentence}}. {{roomsComing}}.</p>
         <div class="actions">
           <a class="pill" href="{{whatsapp}}" target="_blank" rel="noopener">{{> wa-icon}} WhatsApp Robin</a>
           <a class="pill ghost" href="{{tel}}">Call {{phone}}</a>
@@ -224,9 +226,9 @@ bodyClass: home
     </div>
     <div>
       <details><summary>Do I need a referral?</summary><div><p>No — you can contact Robin directly. If a doctor, surgeon or teacher has referred you, have any letters or reports ready for the first session.</p></div></details>
-      <details><summary>Do you work with medical aids?</summary><div><p>This is a cash practice: fees are paid directly and we don’t bill medical aids. Rates are available on request.</p></div></details>
+      <details><summary>Do you work with medical aids?</summary><div><p>This is a cash practice: fees are paid directly, and medical aids aren’t billed. Rates are available on request.</p></div></details>
       <details><summary>Where do sessions happen?</summary><div><p>At your home, your child’s school or another agreed place in {{areasSentence}}. Rooms in Modimolle are coming soon.</p></div></details>
-      <details><summary>What happens in the first session?</summary><div><p>An unhurried assessment — we talk, observe and test, then agree on goals together. You leave knowing what the plan is.</p></div></details>
+      <details><summary>What happens in the first session?</summary><div><p>An unhurried assessment: you talk, Robin observes and tests, and together you agree on goals. You leave knowing what the plan is.</p></div></details>
     </div>
   </div>
 </section>
@@ -240,7 +242,7 @@ bodyClass: home
         {{^LAUNCHED}}<h2 class="display" style="margin-top:.8rem">Be first on<br>the <em>list.</em></h2>
         <p class="sub">Leave your details and Robin will contact you personally as soon as the practice opens.</p>{{/LAUNCHED}}
         {{#LAUNCHED}}<h2 class="display" style="margin-top:.8rem">Let’s take the<br>first <em>step.</em></h2>
-        <p class="sub">Send your details and Robin will get back to you within one working day to arrange an assessment.</p>{{/LAUNCHED}}
+        <p class="sub">Send your details and Robin will be in touch to arrange a first assessment — usually within one working day.</p>{{/LAUNCHED}}
         <div class="direct">
           <a class="pill" href="{{whatsapp}}" target="_blank" rel="noopener">{{> wa-icon}} WhatsApp</a>
           <a class="pill" href="{{tel}}">{{phone}}</a>

@@ -68,7 +68,8 @@ const stemLen=stem.getTotalLength();stem.style.strokeDasharray=stemLen;
 // (so there's no empty sky on load), end on the full scene with the sun.
 const narrow=matchMedia('(max-width: 860px)');
 let aspect=1;
-const measure=()=>{aspect=scene.clientWidth/Math.max(1,scene.clientHeight)||1;if(!narrow.matches)scene.setAttribute('viewBox','0 0 800 700');};
+const fadeRect=document.getElementById('fadeRect'),topFadeGrad=document.getElementById('topFadeGrad'),topFadeSolid=document.getElementById('topFadeSolid');
+const measure=()=>{aspect=scene.clientWidth/Math.max(1,scene.clientHeight)||1;if(!narrow.matches){scene.setAttribute('viewBox','0 0 800 700');fadeRect.setAttribute('x',0);fadeRect.setAttribute('width',800);topFadeGrad.setAttribute('y',0);topFadeGrad.setAttribute('height',110);topFadeSolid.setAttribute('y',110);}};
 measure();addEventListener('resize',measure);narrow.addEventListener('change',measure);
 function camera(s){
   const level=clamp((s+.25)/.9,1,6), fin=clamp((s-5.6)/.8);
@@ -78,6 +79,8 @@ function camera(s){
   const H=Math.max(600,580/aspect), W=H*aspect; // final view: whole stack + sun
   x=lerp(x,130-(W-580)/2,fin);y=lerp(y,668-H,fin);w=lerp(w,W,fin);h=lerp(h,H,fin);
   scene.setAttribute('viewBox',`${x.toFixed(1)} ${y.toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}`);
+  fadeRect.setAttribute('x',x.toFixed(1));fadeRect.setAttribute('width',w.toFixed(1)); // soft edges follow the camera
+  const g=h*.14;topFadeGrad.setAttribute('y',y.toFixed(1));topFadeGrad.setAttribute('height',g.toFixed(1));topFadeSolid.setAttribute('y',(y+g).toFixed(1));
 }
 
 let lastDx=NaN,lastDy=NaN,mx=0,my=0,tmx=0,tmy=0,pS=0,manualCap=-1,lastCap=-9,confettiDone=false;
