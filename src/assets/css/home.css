@@ -159,3 +159,10 @@ section{position:relative}
 .grow.live #birdWrap.perched #birdTail{animation:flick 4.2s ease-in-out .4s infinite}
 @keyframes peek{0%,40%,100%{transform:rotate(0)}48%,62%{transform:rotate(-14deg)}70%,85%{transform:rotate(8deg)}}
 @keyframes flick{0%,80%,100%{transform:rotate(0)}86%{transform:rotate(-22deg)}92%{transform:rotate(6deg)}}
+
+/* ---------- signature (surprise: a pencil writes "Robin") ---------- */
+.sig{width:150px;height:auto;overflow:visible}
+.sig path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.sig-ink,.sig-dot{stroke:var(--terra-ink);stroke-width:2.6}
+.sig-line{stroke:var(--ochre);stroke-width:2}
+.sig-pencil{transition:opacity .5s}

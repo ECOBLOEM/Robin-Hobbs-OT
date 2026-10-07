@@ -304,3 +304,28 @@ function frame() { ticking = false; drawTree(reduce ? 1 : progressOf(grow)); }
 addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }, {passive: true});
 addEventListener('resize', frame); frame();
 })();
+
+/* ===== SIGNATURE: a pencil writes "Robin" as the About section scrolls in ===== */
+(() => {
+const sig = document.querySelector('.sig'); if (!sig) return;
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const ink = sig.querySelector('.sig-ink'), dot = sig.querySelector('.sig-dot'), line = sig.querySelector('.sig-line'), pencil = sig.querySelector('.sig-pencil');
+const L = ink.getTotalLength(), LL = line.getTotalLength();
+ink.style.strokeDasharray = L; line.style.strokeDasharray = LL;
+let ticking = false;
+function draw() {
+  ticking = false;
+  const r = sig.getBoundingClientRect();
+  const p = reduce ? 1 : clamp((innerHeight * .9 - r.top) / (innerHeight * .4));
+  const a = clamp(p / .74), d = clamp((p - .76) / .06), u = clamp((p - .84) / .16);
+  ink.style.strokeDashoffset = L * (1 - a);
+  dot.style.opacity = d > 0 ? 1 : 0;
+  line.style.strokeDashoffset = LL * (1 - u);
+  const pt = u > 0 ? line.getPointAtLength(LL * u) : d > 0 && a >= 1 ? {x: 116, y: 35} : ink.getPointAtLength(L * a);
+  pencil.setAttribute('transform', `translate(${pt.x.toFixed(1)} ${pt.y.toFixed(1)})`);
+  pencil.style.opacity = p > 0 && p < 1 ? 1 : 0;
+}
+addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(draw); } }, {passive: true});
+addEventListener('resize', draw); draw();
+})();
