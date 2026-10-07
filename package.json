@@ -1,0 +1,13 @@
+{
+  "name": "robin-hobbs-ot",
+  "version": "1.0.0",
+  "description": "Robin Hobbs Occupational Therapy website",
+  "scripts": {
+    "shots": "node tools/shoot.mjs"
+  },
+  "type": "commonjs",
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  },
+  "private": "true"
+}
