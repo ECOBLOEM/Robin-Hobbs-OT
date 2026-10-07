@@ -90,19 +90,32 @@ bodyClass: home
       <p class="eyebrow">How therapy works</p>
       <h2 class="display">Growth you can <em>see.</em></h2>
       <ol id="steps">
-        <li><div><b>Listen &amp; assess</b><span>An unhurried first session: your history, how everyday life is going, and what matters most.</span></div></li>
-        <li><div><b>Set real-life goals</b><span>Clear, measurable goals, written together in plain language.</span></div></li>
-        <li><div><b>Hands-on therapy</b><span>Focused sessions built around those goals — at home, at school or at work.</span></div></li>
-        <li><div><b>Practise at home</b><span>A simple home programme so progress doesn’t stop between visits.</span></div></li>
-        <li><div><b>Measure &amp; adjust</b><span>Progress tracked session by session, and the plan adapts.</span></div></li>
-        <li><div><b>Independence</b><span>The goal was always that you won’t need therapy any more.</span></div></li>
+        <li data-n="01"><div><b>Listen &amp; assess</b><span>An unhurried first session: your history, how everyday life is going, and what matters most.</span></div></li>
+        <li data-n="02"><div><b>Set real-life goals</b><span>Clear, measurable goals, written together in plain language.</span></div></li>
+        <li data-n="03"><div><b>Hands-on therapy</b><span>Focused sessions built around those goals — at home, at school or at work.</span></div></li>
+        <li data-n="04"><div><b>Practise at home</b><span>A simple home programme so progress doesn’t stop between visits.</span></div></li>
+        <li data-n="05"><div><b>Measure &amp; adjust</b><span>Progress tracked session by session, and the plan adapts.</span></div></li>
+        <li data-n="06"><div><b>Independence</b><span>The goal was always that you won’t need therapy any more.</span></div></li>
       </ol>
     </div>
-    <svg id="tree" viewBox="0 0 600 640" role="img" aria-label="A tree growing from a seedling to full bloom">
+    <svg id="tree" viewBox="0 0 600 712" role="img" aria-label="A tree growing from its roots to full bloom, with a robin landing on a branch">
+      <!-- underground cut-away: seed + roots (step 1, assessment) -->
+      <path d="M118 606 H482 C474 664 404 704 300 704 C196 704 126 664 118 606Z" fill="#2B2620" opacity=".045"/>
+      <g fill="#CDBFA6" opacity=".7"><ellipse cx="190" cy="640" rx="7" ry="4"/><ellipse cx="420" cy="652" rx="5" ry="3"/><ellipse cx="248" cy="684" rx="4" ry="2.5"/><ellipse cx="372" cy="690" rx="6" ry="3.5"/></g>
+      <ellipse id="seedling" cx="300" cy="616" rx="9" ry="6" fill="#C9A15A"/>
+      <g fill="none" stroke="#5B4636" stroke-linecap="round" opacity=".85">
+        <path class="br root" data-s="0" data-d=".8" stroke-width="9" d="M300 606 C296 630 282 646 258 660 C240 670 222 674 204 684"/>
+        <path class="br root" data-s=".05" data-d=".8" stroke-width="9" d="M300 606 C306 632 322 648 346 658 C366 666 384 670 402 680"/>
+        <path class="br root" data-s=".1" data-d=".75" stroke-width="7" d="M300 606 C300 640 296 664 300 694"/>
+        <path class="br root" data-s=".2" data-d=".7" stroke-width="5" d="M297 612 C270 622 236 626 206 642"/>
+        <path class="br root" data-s=".25" data-d=".7" stroke-width="5" d="M303 612 C332 624 368 628 398 642"/>
+        <path class="br root" data-s=".45" data-d=".55" stroke-width="3" d="M258 660 C252 672 252 682 256 692"/>
+        <path class="br root" data-s=".5" data-d=".5" stroke-width="3" d="M346 658 C356 670 360 680 358 690"/>
+      </g>
       <ellipse cx="300" cy="606" rx="190" ry="16" fill="#2B2620" opacity=".08"/>
       <path d="M140 606 H460" stroke="#2B2620" stroke-width="2" stroke-linecap="round"/>
       <g fill="none" stroke="#5B4636" stroke-linecap="round">
-        <path class="br" data-s="0" stroke-width="22" d="M300 606 C298 540 306 480 300 420 C295 370 302 320 300 260"/>
+        <path class="br" data-s=".45" data-d=".95" stroke-width="22" d="M300 606 C298 540 306 480 300 420 C295 370 302 320 300 260"/>
         <path class="br" data-s="1" stroke-width="11" d="M301 470 C340 450 380 420 410 380"/>
         <path class="br" data-s="1" stroke-width="11" d="M299 440 C260 420 225 395 195 355"/>
         <path class="br" data-s="2" stroke-width="9" d="M300 360 C350 340 400 300 440 250"/>
@@ -110,7 +123,21 @@ bodyClass: home
         <path class="br" data-s="3" stroke-width="7" d="M300 262 C320 220 340 190 360 150"/>
         <path class="br" data-s="3" stroke-width="7" d="M300 262 C280 220 255 190 235 150"/>
       </g>
+      <!-- bare perch twig + robin (step 6, independence) -->
+      <g id="perch">
+        <path class="br" data-s="1.3" data-d=".8" fill="none" stroke="#5B4636" stroke-width="5" stroke-linecap="round" d="M372 426 C408 420 446 418 500 412"/>
+      </g>
       <g id="leaves"></g>
+      <g id="birdWrap">
+        <g id="bird" opacity="0">
+          <path id="birdTail" d="M9 -11 L25 -18 L23 -9 Z" fill="#4E3E31"/>
+          <ellipse cx="2" cy="-12" rx="12.5" ry="9" fill="#6B5444"/>
+          <ellipse cx="-4" cy="-10" rx="7.5" ry="6.5" fill="#C8643B"/>
+          <g id="birdHead"><circle cx="-8" cy="-22" r="6.8" fill="#6B5444"/><circle cx="-10.2" cy="-23" r="1.4" fill="#2B2620"/><path d="M-14.4 -23.2 L-20 -21.6 L-14.4 -20Z" fill="#E0A43A"/></g>
+          <path id="birdWing" d="M-2 -16 C6 -21 15 -17 17 -10 C9 -9 2 -10 -2 -16Z" fill="#4E3E31"/>
+          <path d="M-2 -4 V0.5 M3 -4 V0.5" stroke="#2B2620" stroke-width="1.6" stroke-linecap="round"/>
+        </g>
+      </g>
     </svg>
   </div>
 </section>

@@ -213,7 +213,10 @@ const NS = 'http://www.w3.org/2000/svg';
 const mk = (tag, attrs) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
 
 /* ===== TREE ===== */
-const branches = [...document.querySelectorAll('#tree .br')];
+// Roots grow first (assessment), then the trunk, branches, leaves and fruit.
+// Leaves rustle gently while in view; a robin lands on a bare twig at "Independence".
+const treeSvg = document.getElementById('tree');
+const branches = [...treeSvg.querySelectorAll('.br')];
 branches.forEach(b => { const L = b.getTotalLength(); b.style.strokeDasharray = L; b.style.strokeDashoffset = L; b.dataset.l = L; });
 const LEAF_COLS = ['#7E9C76', '#5E8466', '#A3B98A', '#2F4A3A'];
 const clusters = [
@@ -226,11 +229,17 @@ const leavesG = document.getElementById('leaves');
 const leafEls = [];
 let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
 clusters.forEach(c => c.pts.forEach(([x, y]) => {
+  // each tuft of leaves sways around its own base (timings use Math.random so the leaf layout stays identical)
+  const tuft = mk('g', {class: 'tuft'});
+  tuft.style.transformOrigin = `${x}px ${y + 34}px`;
+  tuft.style.animationDuration = (3.4 + Math.random() * 1.8).toFixed(2) + 's';
+  tuft.style.animationDelay = (-Math.random() * 5).toFixed(2) + 's';
+  leavesG.appendChild(tuft);
   for (let k = 0; k < 5; k++) {
     const r = 18 + rnd() * 22;
     const el = mk('circle', {cx: x + (rnd() - .5) * 60, cy: y + (rnd() - .5) * 50, r, fill: LEAF_COLS[Math.floor(rnd() * 4)], opacity: .9, class: 'leaf'});
     el.style.transitionDelay = (rnd() * .35) + 's';
-    el.dataset.s = c.s; leavesG.appendChild(el); leafEls.push(el);
+    el.dataset.s = c.s; tuft.appendChild(el); leafEls.push(el);
   }
 }));
 [[370, 215], [240, 230], [430, 300], [175, 290], [310, 150], [270, 260]].forEach(([x, y]) => {
@@ -238,17 +247,56 @@ clusters.forEach(c => c.pts.forEach(([x, y]) => {
 });
 const steps = [...document.querySelectorAll('#steps li')];
 const grow = document.querySelector('.grow');
+
+// only rustle / idle while the tree is on screen
+new IntersectionObserver(([e]) => grow.classList.toggle('live', e.isIntersecting)).observe(grow);
+
+/* robin */
+const bird = document.getElementById('bird'), birdWing = document.getElementById('birdWing');
+const birdWrap = document.getElementById('birdWrap'), perch = document.getElementById('perch');
+const FROM = {x: 660, y: 150}, CTRL = {x: 540, y: 470}, PERCH = {x: 486, y: 413};
+const BIRD_ON = 5.25, BIRD_OFF = 5.05;
+let bp = 0, birdDir = 0, birdLast = 0, birdBusy = false;
+function placeBird(q, now) {
+  const e = q < .5 ? 4 * q * q * q : 1 - Math.pow(-2 * q + 2, 3) / 2, u = 1 - e; // glide in, settle
+  const x = u * u * FROM.x + 2 * u * e * CTRL.x + e * e * PERCH.x;
+  const y = u * u * FROM.y + 2 * u * e * CTRL.y + e * e * PERCH.y;
+  bird.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(1.5)`);
+  bird.setAttribute('opacity', q > 0 ? 1 : 0);
+  const flap = q > 0 && q < 1 ? Math.sin(now / 42) * 38 * (1 - e * .7) - 12 : 0;
+  birdWing.setAttribute('transform', `rotate(${flap.toFixed(1)} -1 -15)`);
+}
+function birdFrame(now) {
+  const dt = Math.min(50, now - birdLast); birdLast = now;
+  bp = clamp(bp + birdDir * dt / (birdDir > 0 ? 1500 : 900));
+  placeBird(bp, now);
+  if ((birdDir > 0 && bp < 1) || (birdDir < 0 && bp > 0)) return requestAnimationFrame(birdFrame);
+  birdBusy = false;
+  if (bp >= 1) { // touchdown: the twig dips under the robin
+    birdWrap.classList.add('perched');
+    [perch, birdWrap].forEach(g => { g.classList.remove('dip'); void g.getBoundingClientRect(); g.classList.add('dip'); });
+  }
+}
+function flyBird(dir) {
+  if (dir < 0) birdWrap.classList.remove('perched');
+  if (reduce) { bp = dir > 0 ? 1 : 0; placeBird(bp, 0); if (dir > 0) birdWrap.classList.add('perched'); return; }
+  birdDir = dir;
+  if (!birdBusy) { birdBusy = true; birdLast = performance.now(); requestAnimationFrame(birdFrame); }
+}
+placeBird(0, 0);
+
 function drawTree(p) {
   const s = p * 6.6;
   branches.forEach(b => {
-    const k = clamp(s - +b.dataset.s);
+    const k = clamp((s - +b.dataset.s) / (+b.dataset.d || 1));
     b.style.strokeDashoffset = b.dataset.l * (1 - ease(k));
   });
   leafEls.forEach(l => l.classList.toggle('on', s >= +l.dataset.s + .5));
   const cur = Math.min(5, Math.floor(s));
   steps.forEach((li, i) => { li.classList.toggle('on', i <= cur); li.classList.toggle('cur', i === cur); });
+  if (s >= BIRD_ON && (bp < 1 && birdDir <= 0 || !birdBusy && bp < 1)) flyBird(1);
+  else if (s < BIRD_OFF && bp > 0 && birdDir >= 0) flyBird(-1);
 }
-
 
 /* ===== loop ===== */
 let ticking = false;
