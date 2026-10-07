@@ -1,0 +1,45 @@
+<a class="wa-float" href="{{whatsapp}}" target="_blank" rel="noopener">{{> wa-icon}}<span>WhatsApp Robin</span><span class="sr-only"> (opens WhatsApp)</span></a>
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <a href="/" class="mark" aria-label="{{name}} — home">
+          {{> mark}}
+          <span>Robin Hobbs<small>Occupational Therapy</small></span>
+        </a>
+        <p class="tag">Occupational therapy for children and adults across the Waterberg.</p>
+      </div>
+      <div>
+        <h2>Where</h2>
+        <ul>
+          <li>Home &amp; school visits</li>
+          {{#areas}}<li>{{areasList}}</li>{{/areas}}
+          <li>{{#rooms}}{{rooms}}{{/rooms}}{{^rooms}}{{roomsComing}}{{/rooms}}</li>
+        </ul>
+      </div>
+      <div>
+        <h2>Contact</h2>
+        <ul>
+          <li><a href="{{tel}}">{{phone}}</a></li>
+          <li><a href="{{whatsapp}}" target="_blank" rel="noopener">WhatsApp</a></li>
+          {{#email}}<li><a href="mailto:{{email}}">{{email}}</a></li>{{/email}}
+          <li>{{hoursShort}}</li>
+        </ul>
+      </div>
+      <div>
+        <h2>Practice</h2>
+        <ul>
+          <li>HPCSA reg. {{hpcsa}}</li>
+          <li>{{#practiceNo}}Practice no. {{practiceNo}}{{/practiceNo}}{{^practiceNo}}Practice no. to follow{{/practiceNo}}</li>
+          <li>{{payment}}</li>
+          <li>{{languages}}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="base">
+      <span>© {{year}} {{name}}</span>
+      <span><a href="/privacy/">Privacy notice (POPIA)</a> · <a href="/faq/">FAQ</a></span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js" defer></script>

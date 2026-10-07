@@ -1,5 +1,11 @@
 [build]
-  publish = "."
+  command = "node tools/build.mjs"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # dev-only dependency (screenshots); don't download browsers on Netlify
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1"
 
 [[headers]]
   for = "/*"
@@ -7,3 +13,4 @@
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"

@@ -1,0 +1,143 @@
+/* =========================================================
+   Robin Hobbs OT — shared styles (every page)
+   ========================================================= */
+:root{
+  --paper:#F5EFE4; --paper-2:#EDE4D3; --ink:#2B2620; --ink-soft:#5E554A;
+  --terra:#C8643B; --terra-ink:#A64B25; /* terra darkened for AA text on paper */
+  --ochre:#E0A43A; --sage:#7E9C76; --forest:#2F4A3A; --sky:#9CC3D5; --plum:#8A5A7A;
+  --display:'Fraunces',Georgia,serif; --body:'Hanken Grotesk',system-ui,sans-serif; --hand:'Caveat',cursive;
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");
+  --nav-h:68px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 16px)}
+body{background:var(--paper) var(--grain);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--terra);outline-offset:3px;border-radius:4px}
+.skip{position:absolute;left:16px;top:-60px;z-index:100;background:var(--ink);color:var(--paper);padding:.6rem 1rem;border-radius:8px;text-decoration:none}
+.skip:focus{top:12px}
+.wrap{width:min(1180px,100% - 32px);margin-inline:auto}
+.display{font-family:var(--display);font-variation-settings:"SOFT" 100;font-weight:400;letter-spacing:-.02em;line-height:1.02}
+.display em{font-style:italic;color:var(--terra)}
+.hand{font-family:var(--hand);color:var(--terra-ink);font-size:1.5em;line-height:1}
+.eyebrow{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ink-soft)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- prelaunch ribbon ---------- */
+.ribbon{background:var(--forest);color:var(--paper);text-align:center;font-size:.85rem;padding:.55rem 1rem;letter-spacing:.02em}
+.ribbon b{color:var(--ochre);font-weight:600}
+.ribbon b{white-space:nowrap}
+@media(max-width:480px){.ribbon .ribbon-link{display:none}}
+.ribbon a{color:var(--paper);text-underline-offset:3px;white-space:nowrap}
+
+/* ---------- nav ---------- */
+nav.top{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);background:color-mix(in srgb,var(--paper) 86%,transparent);border-bottom:1px solid color-mix(in srgb,var(--ink) 8%,transparent)}
+nav.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;height:var(--nav-h)}
+.mark{display:flex;align-items:center;gap:.7rem;text-decoration:none;flex-shrink:0}
+.mark svg{width:38px;height:38px}
+.mark span{font-family:var(--display);font-size:1.15rem;line-height:1.05;font-variation-settings:"SOFT" 100}
+.mark small{display:block;font-family:var(--body);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft)}
+.navlinks{display:flex;gap:2rem;list-style:none;font-size:.95rem}
+.navlinks a{text-decoration:none;position:relative}
+.navlinks a::after{content:"";position:absolute;left:0;right:100%;bottom:-4px;height:2px;background:var(--terra);transition:right .3s}
+.navlinks a:hover::after,.navlinks a[aria-current]::after{right:0}
+.navend{display:flex;align-items:center;gap:.5rem}
+.menu-btn{display:none;width:44px;height:44px;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--ink) 20%,transparent);background:transparent;cursor:pointer;place-items:center}
+.menu-btn i,.menu-btn i::before,.menu-btn i::after{display:block;width:18px;height:2px;border-radius:2px;background:var(--ink);position:relative;transition:transform .25s}
+.menu-btn i::before,.menu-btn i::after{content:"";position:absolute;left:0}
+.menu-btn i::before{top:-6px}.menu-btn i::after{top:6px}
+nav.top[data-open] .menu-btn i{background:transparent}
+nav.top[data-open] .menu-btn i::before{transform:translateY(6px) rotate(45deg)}
+nav.top[data-open] .menu-btn i::after{transform:translateY(-6px) rotate(-45deg)}
+@media(max-width:860px){
+  .menu-btn{display:grid}
+  .navlinks{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;gap:0;background:var(--paper);border-bottom:1px solid color-mix(in srgb,var(--ink) 10%,transparent);padding:.5rem 16px 1.2rem;font-family:var(--display);font-size:1.6rem}
+  .navlinks a{display:block;padding:.55rem 0}
+  .navlinks a::after{display:none}
+  .navlinks a[aria-current]{color:var(--terra-ink)}
+  nav.top[data-open] .navlinks{display:flex}
+  nav.top .pill{padding:.55rem .95rem;font-size:.85rem}
+  .mark small{letter-spacing:.1em}
+}
+.navlinks .menu-cta{display:none}
+@media(max-width:520px){
+  nav.top .wrap{gap:.5rem}
+  .mark{gap:.5rem}.mark svg{width:32px;height:32px}
+  .mark span{font-size:1.05rem}.mark small{font-size:.6rem;letter-spacing:.06em}
+  .navend{gap:.4rem}
+  nav.top .pill{padding:.5rem .8rem;font-size:.82rem;min-height:40px}
+  .menu-btn{width:40px;height:40px}
+}
+@media(max-width:374px){
+  nav.top .navend .pill{display:none}
+  .navlinks .menu-cta{display:block}
+  .navlinks .menu-cta a{color:var(--terra-ink)}
+}
+
+/* ---------- buttons ---------- */
+.pill{white-space:nowrap;display:inline-flex;align-items:center;gap:.5rem;background:var(--ink);color:var(--paper);padding:.7rem 1.2rem;border-radius:999px;text-decoration:none;font-weight:500;font-size:.95rem;transition:transform .2s,background .2s;border:0;cursor:pointer;font-family:inherit;min-height:44px}
+.pill:hover{background:var(--terra-ink);transform:translateY(-2px)}
+.pill.ghost{background:transparent;color:inherit;box-shadow:inset 0 0 0 1.5px currentColor}
+.pill.ghost:hover{background:color-mix(in srgb,currentColor 10%,transparent)}
+.pill svg{width:18px;height:18px}
+
+/* ---------- WhatsApp float ---------- */
+.wa-float{position:fixed;right:16px;bottom:16px;z-index:60;display:flex;align-items:center;gap:.55rem;background:var(--forest);color:var(--paper);text-decoration:none;border-radius:999px;padding:.7rem 1.1rem .7rem .8rem;font-size:.92rem;font-weight:500;box-shadow:0 0 0 2px var(--paper),0 10px 30px -10px rgba(43,38,32,.5);transition:transform .2s,background .2s}
+.wa-float:hover{transform:translateY(-2px);background:var(--ink)}
+.wa-float svg{width:26px;height:26px}
+@media(max-width:860px){.wa-float{padding:.8rem}.wa-float span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}}
+
+/* ---------- footer ---------- */
+.site-foot{background:var(--ink);color:var(--paper);padding:5rem 0 6.5rem;border-radius:48px 48px 0 0;margin-top:6rem}
+.home .site-foot{border-radius:0;margin-top:0;padding-top:2rem}
+.site-foot .cols{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:2.5rem}
+.site-foot .mark small{color:color-mix(in srgb,var(--paper) 65%,transparent)}
+.site-foot .tag{margin-top:1rem;font-size:.95rem;color:color-mix(in srgb,var(--paper) 72%,transparent);max-width:28ch}
+.site-foot h2{font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ochre);margin-bottom:.9rem}
+.site-foot ul{list-style:none;display:grid;gap:.4rem;font-size:.95rem}
+.site-foot li{color:color-mix(in srgb,var(--paper) 85%,transparent)}
+.site-foot a{text-underline-offset:3px;text-decoration-color:color-mix(in srgb,var(--paper) 40%,transparent)}
+.site-foot a:hover{color:var(--ochre)}
+.site-foot .base{margin-top:4rem;padding-top:1.5rem;border-top:1px solid rgba(245,239,228,.18);display:flex;flex-wrap:wrap;justify-content:space-between;gap:.6rem 2rem;font-size:.82rem;color:color-mix(in srgb,var(--paper) 62%,transparent)}
+@media(max-width:960px){.site-foot .cols{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.site-foot{padding:4rem 0 6rem;border-radius:28px 28px 0 0}.site-foot .cols{grid-template-columns:1fr;gap:2rem}}
+
+/* ---------- forms (dark surfaces) ---------- */
+form.form{display:grid;gap:1.1rem}
+form.form .row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+form.form label{font-size:.85rem;letter-spacing:.04em;color:color-mix(in srgb,var(--paper) 78%,transparent);display:grid;gap:.35rem}
+form.form input,form.form select,form.form textarea{font:inherit;font-size:1rem;color:var(--paper);background:transparent;border:0;border-bottom:1.5px solid rgba(245,239,228,.4);padding:.6rem 0;outline:none;transition:border-color .2s;border-radius:0;width:100%}
+form.form input:focus,form.form select:focus,form.form textarea:focus{border-color:var(--ochre)}
+form.form ::placeholder{color:color-mix(in srgb,var(--paper) 50%,transparent)}
+form.form select option{color:var(--ink)}
+form.form textarea{resize:vertical;min-height:90px}
+form.form .note{font-size:.82rem;color:color-mix(in srgb,var(--paper) 70%,transparent)}
+form.form .consent{display:flex;gap:.7rem;align-items:flex-start;font-size:.85rem;letter-spacing:0}
+form.form .consent input{width:20px;height:20px;flex-shrink:0;margin-top:.15rem;accent-color:var(--ochre)}
+form.form .consent a{color:var(--paper)}
+form.form .pill{background:var(--ochre);color:var(--ink);justify-self:start;margin-top:.4rem}
+form.form .pill:hover{background:var(--paper)}
+.hp{position:absolute;left:-9999px}
+@media(max-width:860px){form.form .row{grid-template-columns:1fr}}
+
+/* ---------- reveal ---------- */
+.js .rv{opacity:0;transform:translateY(28px);transition:opacity .9s,transform .9s cubic-bezier(.2,.7,.2,1)}
+.js .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .js .rv{opacity:1;transform:none}
+}
+
+/* ---------- accordion (FAQ) ---------- */
+details{border-top:1px solid color-mix(in srgb,var(--ink) 25%,transparent);padding:1.3rem 0}
+details:last-of-type{border-bottom:1px solid color-mix(in srgb,var(--ink) 25%,transparent)}
+summary{list-style:none;cursor:pointer;font-family:var(--display);font-size:1.3rem;line-height:1.3;display:flex;justify-content:space-between;gap:1rem}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--body);color:var(--terra-ink);transition:transform .3s;flex-shrink:0}
+details[open] summary::after{transform:rotate(45deg)}
+details > div{margin-top:.8rem;color:var(--ink-soft);max-width:62ch}
+details > div p + p,details > div ul{margin-top:.7rem}
+details > div ul{padding-left:1.2rem}
+details a,.solo p a{color:var(--terra-ink);text-underline-offset:3px}

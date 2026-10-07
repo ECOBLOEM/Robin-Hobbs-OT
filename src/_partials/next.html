@@ -1,0 +1,15 @@
+<section class="next" aria-labelledby="next-title">
+  <div class="wrap">
+    <div class="card">
+      {{> hills}}
+      <div style="position:relative">
+        <h2 class="display" id="next-title">{{^LAUNCHED}}Opening early 2027.{{/LAUNCHED}}{{#LAUNCHED}}Ready for the first step?{{/LAUNCHED}}</h2>
+        <p>{{^LAUNCHED}}Join the early list and Robin will contact you personally when the practice opens — or send a WhatsApp with a question now.{{/LAUNCHED}}{{#LAUNCHED}}Send your details or a WhatsApp and Robin will get back to you within one working day.{{/LAUNCHED}}</p>
+      </div>
+      <div class="actions">
+        <a class="pill" href="/#contact">{{cta}} →</a>
+        <a class="pill ghost" href="{{whatsapp}}" target="_blank" rel="noopener">{{> wa-icon}} WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>

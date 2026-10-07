@@ -6,9 +6,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const page_ = process.argv[2] || '/';
-const out = path.join(root, process.argv[3] || 'screenshots');
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'dist');
+const shotsRoot = path.resolve(root, '..');
+const pagesArg = (process.argv[2] || '/').split(',');
+const out = path.join(shotsRoot, process.argv[3] || 'screenshots');
 fs.mkdirSync(out, { recursive: true });
 
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.xml': 'application/xml', '.txt': 'text/plain' };
@@ -23,18 +24,24 @@ const server = http.createServer((req, res) => {
 const base = `http://localhost:${server.address().port}`;
 
 const browser = await chromium.launch();
-for (const [name, w, h] of [['desktop', 1366, 768], ['mobile', 390, 844]]) {
+for (const page_ of pagesArg) for (const [vw, w, h] of [['desktop', 1366, 768], ['mobile', 390, 844], ['narrow', 320, 640]]) {
+  const slug = page_.replace(/\W+/g, '-').replace(/^-|-$/g, '') || 'home';
+  const name = `${slug}-${vw}`;
   const page = await browser.newPage({ viewport: { width: w, height: h }, deviceScaleFactor: 1 });
+  page.on('pageerror', e => console.warn(`[${name}] JS ERROR: ${e.message}`));
   await page.goto(base + page_, { waitUntil: 'networkidle' });
   const total = await page.evaluate(() => document.documentElement.scrollHeight);
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth);
-  if (overflow) console.warn(`[${name}] HORIZONTAL OVERFLOW`);
-  const n = Math.min(14, Math.ceil(total / h));
+  if (overflow) console.warn(`[${name}] HORIZONTAL OVERFLOW:`, await page.evaluate(() =>
+    [...document.querySelectorAll('body *')].filter(el => el.getBoundingClientRect().right > innerWidth + 1)
+      .slice(0, 6).map(el => `${el.tagName.toLowerCase()}.${[...el.classList].join('.')} → ${Math.round(el.getBoundingClientRect().right)}px`).join(', ')));
+  const n = vw === 'narrow' ? 1 : Math.max(2, Math.min(14, Math.ceil(total / h)));
   for (let i = 0; i < n; i++) {
     await page.evaluate(y => scrollTo(0, y), Math.round((total - h) * i / (n - 1)));
     await page.waitForTimeout(700);
     await page.screenshot({ path: path.join(out, `${name}-${String(i).padStart(2, '0')}.png`) });
   }
+  await page.close();
   console.log(`${name}: ${n} shots, page height ${total}px`);
 }
 await browser.close(); server.close();

@@ -1,0 +1,103 @@
+---
+title: Privacy notice (POPIA) · Robin Hobbs Occupational Therapy
+description: How Robin Hobbs Occupational Therapy collects, uses, stores and protects personal information submitted through this website, in line with POPIA.
+---
+{{> head}}
+<link rel="stylesheet" href="/assets/css/pages.css">
+</head>
+<body>
+{{> header}}
+
+<main id="main">
+<header class="page-hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Privacy notice</p>
+      <h1 class="display">Your details, <em>kept safe.</em></h1>
+      <p class="lede">How we handle the personal information you send through this website, in line with the Protection of Personal Information Act (POPIA).</p>
+    </div>
+  </div>
+</header>
+
+<!-- Have this notice reviewed before launch (retention periods, operators). -->
+<section class="prose">
+  <div class="wrap">
+    <ul class="toc" aria-label="On this page">
+      <li><a href="#who">Who we are</a></li>
+      <li><a href="#what">What we collect</a></li>
+      <li><a href="#why">Why we collect it</a></li>
+      <li><a href="#health">Health information</a></li>
+      <li><a href="#share">Who we share it with</a></li>
+      <li><a href="#keep">How long we keep it</a></li>
+      <li><a href="#safe">How we protect it</a></li>
+      <li><a href="#rights">Your rights</a></li>
+      <li><a href="#complain">Complaints</a></li>
+    </ul>
+    <article>
+      <p class="meta">Last updated: 7 October 2026</p>
+
+      <h2 id="who">Who we are</h2>
+      <p>{{name}} is the <strong>responsible party</strong> for personal information collected through this website. The information officer is {{therapist}}.</p>
+      <ul>
+        <li>Phone / WhatsApp: <a href="{{tel}}">{{phone}}</a></li>
+        {{#email}}<li>Email: <a href="mailto:{{email}}">{{email}}</a></li>{{/email}}
+        <li>Area: the Waterberg, Limpopo, South Africa</li>
+      </ul>
+
+      <h2 id="what">What we collect</h2>
+      <p>When you complete the form on this website, we collect:</p>
+      <ul>
+        <li>your name and phone number</li>
+        <li>your email address, if you choose to give it</li>
+        <li>who the therapy is for (for example, your child) and your area</li>
+        <li>any short message you choose to add</li>
+        <li>a record that you gave consent, and when</li>
+      </ul>
+      <p>Like most websites, our hosting provider automatically records basic technical information (such as your IP address and browser type) to keep the site secure and working. We don’t use advertising or tracking cookies.</p>
+
+      <h2 id="why">Why we collect it</h2>
+      <p>We use your details only to contact you about occupational therapy: {{^LAUNCHED}}to let you know when the practice opens and{{/LAUNCHED}} to answer your enquiry and arrange appointments. We process this information with your consent, and because it’s needed to take the steps you’ve asked for.</p>
+      <p>We will never sell your information or use it for unrelated marketing.</p>
+
+      <h2 id="health">Health information</h2>
+      <p>Information about your health or your child’s health is <strong>special personal information</strong> under POPIA. Please <strong>don’t include detailed medical information</strong> in the website form. Robin will talk through what’s needed with you directly.</p>
+      <p>Clinical information shared during therapy is not collected through this website. It is kept confidential and stored separately, in line with HPCSA rules on patient records.</p>
+
+      <h2 id="share">Who we share it with</h2>
+      <p>We don’t share your details with anyone except the service providers (“operators”) we need to run this website:</p>
+      <ul>
+        <li><strong>Netlify, Inc.</strong> — hosts this website and receives form submissions on our behalf. Netlify’s servers may be located outside South Africa, including in the United States.</li>
+        <li><strong>Google Fonts</strong> — supplies the typefaces used on this site, which means your browser connects to Google’s servers.</li>
+        <li><strong>WhatsApp</strong> — if you choose to message us on WhatsApp, WhatsApp’s own privacy policy applies to that conversation.</li>
+      </ul>
+      <p>By submitting the form, you consent to your information being transferred to and stored by these providers outside South Africa, as allowed by section 72 of POPIA. We will only share information with others if the law requires it.</p>
+
+      <h2 id="keep">How long we keep it</h2>
+      <ul>
+        <li><strong>Waiting list and enquiries:</strong> kept until we have contacted you, and deleted within 12 months if you don’t go ahead with therapy.</li>
+        <li><strong>If you become a client:</strong> your contact details move into your patient file, which is kept for the periods required by HPCSA guidelines and the law.</li>
+      </ul>
+      <p>You can ask us to delete your details sooner at any time.</p>
+
+      <h2 id="safe">How we protect it</h2>
+      <p>The website runs over a secure (HTTPS) connection, form submissions are only available to {{therapist}} through a password-protected account, and we keep only the information we need.</p>
+
+      <h2 id="rights">Your rights</h2>
+      <p>Under POPIA you may:</p>
+      <ul>
+        <li>ask what personal information we hold about you, and get a copy</li>
+        <li>ask us to correct or delete it</li>
+        <li>withdraw your consent or object to us using it</li>
+      </ul>
+      <p>To do any of these, contact {{therapist}} on <a href="{{tel}}">{{phone}}</a> (call or WhatsApp). We may need to confirm your identity first.</p>
+
+      <h2 id="complain">Complaints</h2>
+      <p>If you’re unhappy with how we’ve handled your information, please tell us first so we can put it right. You also have the right to complain to the <a href="https://inforegulator.org.za/" target="_blank" rel="noopener">Information Regulator (South Africa)</a>.</p>
+    </article>
+  </div>
+</section>
+</main>
+
+{{> footer}}
+</body>
+</html>

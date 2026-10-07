@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "Robin Hobbs Occupational Therapy website",
   "scripts": {
-    "shots": "node tools/shoot.mjs"
+    "shots": "node tools/build.mjs && node tools/shoot.mjs",
+    "build": "node tools/build.mjs"
   },
-  "type": "commonjs",
+  "type": "module",
   "devDependencies": {
     "playwright": "^1.63.0"
   },

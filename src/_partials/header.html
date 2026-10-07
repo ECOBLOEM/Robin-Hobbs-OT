@@ -1,0 +1,21 @@
+<a class="skip" href="#main">Skip to content</a>
+{{^LAUNCHED}}<div class="ribbon"><b>{{openingText}}</b><span class="ribbon-link"> — <a href="/#contact">join the early list</a></span></div>{{/LAUNCHED}}
+<nav class="top" aria-label="Main">
+  <div class="wrap">
+    <a href="/" class="mark" aria-label="{{name}} — home">
+      {{> mark}}
+      <span>Robin Hobbs<small>Occupational Therapy</small></span>
+    </a>
+    <ul class="navlinks" id="navlinks">
+      <li><a href="/services/" data-nav>Services</a></li>
+      <li><a href="/#journey">How it works</a></li>
+      <li><a href="/about/" data-nav>About Robin</a></li>
+      <li><a href="/faq/" data-nav>FAQ</a></li>
+      <li class="menu-cta"><a href="/#contact">{{cta}} →</a></li>
+    </ul>
+    <div class="navend">
+      <a class="pill" href="/#contact">{{cta}} →</a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="navlinks"><i></i><span class="sr-only">Menu</span></button>
+    </div>
+  </div>
+</nav>
