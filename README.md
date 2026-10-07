@@ -64,9 +64,6 @@ Built from the `hero-blocks-v2` prototype: 3D blocks drop in on scroll and a chi
 - Mobile: headline → scene → caption. A "camera" starts close on the first block and pulls back as the stack grows, so there's no empty sky on load.
 - `prefers-reduced-motion`: shows the finished scene, with nothing moving.
 
-```bash
-```
-
 ## Forms
 
 Netlify Forms, form name `contact`, honeypot `bot-field`, success page `/thanks.html`. A hidden `list` field records `waitlist` or `booking` depending on `LAUNCHED`. Submissions appear in Netlify → Forms. **Set up an email notification** there (Forms → Form notifications) so Robin hears about new sign-ups.
