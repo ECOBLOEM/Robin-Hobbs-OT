@@ -19,6 +19,8 @@ schema: business
       <h1 class="display">Grow, then <em>fly.</em></h1>
       <p class="lede">Therapy that helps children and adults grow into the everyday things that matter — and then go and live them.</p>
       <p class="eyebrow steps-label">How therapy works</p>
+      <div class="caption">
+      <div class="meter" aria-hidden="true"><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="count">Step <b>1</b> of 6</span></div>
       <ol id="steps">
         <li data-n="01"><div><b>Listen &amp; assess</b><span>An unhurried first session: your history, how everyday life is going, and what matters most.</span></div></li>
         <li data-n="02"><div><b>Set real-life goals</b><span>Clear, measurable goals, written together in plain language.</span></div></li>
@@ -27,6 +29,7 @@ schema: business
         <li data-n="05"><div><b>Measure &amp; adjust</b><span>Progress tracked session by session, and the plan adapts.</span></div></li>
         <li data-n="06"><div><b>Independence</b><span>The goal was always that you won’t need therapy any more.</span></div></li>
       </ol>
+      </div>
       <p class="hint" aria-hidden="true">Scroll to grow</p>
     </div>
     <div class="tree-wrap">
@@ -81,7 +84,7 @@ schema: business
 <section class="what" id="what">
   <div class="wrap">
     <p class="eyebrow rv">What is occupational therapy?</p>
-    <h2 class="display big rv" style="margin-top:1rem">Your “occupations” are simply <span>the things you do every day.</span> OT helps you do them again — or for the first time.</h2>
+    <h2 class="display big rv">Your “occupations” are simply <span>the things you do every day.</span> OT helps you do them again — or for the first time.</h2>
     <div class="cols">
       <div class="rv"><h3>The whole person</h3><p>OT looks at body, mind, routines and surroundings — not just the injury or the diagnosis.</p></div>
       <div class="rv"><h3>Goals that mean something</h3><p>Buttoning a school shirt. Holding a pen. Making a cup of tea after a stroke. Getting back to work.</p></div>
@@ -138,7 +141,7 @@ schema: business
     </div>
     <div>
       <p class="eyebrow rv">About Robin</p>
-      <h2 class="display rv" style="margin-top:.8rem">Hi, I’m Robin.</h2>
+      <h2 class="display rv">Hi, I’m Robin.</h2>
       <p class="rv">I’m an occupational therapist who believes therapy should feel human — warm, honest and focused on the things you actually want to do. I’m bringing that to the Waterberg so families here don’t have to travel far for care.</p>
       <p class="rv">Whether it’s a toddler learning to hold a crayon or an adult relearning everyday tasks after a stroke, my job is the same: find what’s getting in the way, and build a clear path around it.</p>
       <ul class="creds rv">
@@ -171,8 +174,8 @@ schema: business
       {{> hills}}
       <div style="position:relative">
         <p class="eyebrow" style="color:rgba(255,255,255,.85)">Where to find Robin</p>
-        <h2 class="display" style="margin-top:.6rem">Therapy that comes to you.</h2>
-        <p style="margin-top:1rem">A mobile practice for the Waterberg. Therapy happens where everyday life happens — at home, at school or at work — across {{areasSentence}}. {{roomsComing}}.</p>
+        <h2 class="display">Therapy that comes to you.</h2>
+        <p>A mobile practice for the Waterberg. Therapy happens where everyday life happens — at home, at school or at work — across {{areasSentence}}. {{roomsComing}}.</p>
         <div class="actions">
           <a class="pill" href="{{whatsapp}}" target="_blank" rel="noopener">{{> wa-icon}} WhatsApp Robin</a>
           <a class="pill ghost" href="{{tel}}">Call {{phone}}</a>
@@ -194,7 +197,7 @@ schema: business
   <div class="wrap grid">
     <div>
       <p class="eyebrow">Good to know</p>
-      <h2 class="display rv" style="margin-top:.8rem">Questions parents &amp; patients ask.</h2>
+      <h2 class="display rv">Questions parents &amp; patients ask.</h2>
       <a class="all" href="/faq/">All questions →</a>
     </div>
     <div>
@@ -213,9 +216,9 @@ schema: business
       <div style="position:relative">
         {{> landing-seed}}
         <p class="eyebrow">{{^LAUNCHED}}{{openingText}}{{/LAUNCHED}}{{#LAUNCHED}}Book a session{{/LAUNCHED}}</p>
-        {{^LAUNCHED}}<h2 class="display" style="margin-top:.8rem">Be first on<br>the <em>list.</em></h2>
+        {{^LAUNCHED}}<h2 class="display">Be first on<br>the <em>list.</em></h2>
         <p class="sub">Leave your details and Robin will contact you personally as soon as the practice opens.</p>{{/LAUNCHED}}
-        {{#LAUNCHED}}<h2 class="display" style="margin-top:.8rem">Let’s take the<br>first <em>step.</em></h2>
+        {{#LAUNCHED}}<h2 class="display">Let’s take the<br>first <em>step.</em></h2>
         <p class="sub">Send your details and Robin will be in touch to arrange a first assessment — usually within one working day.</p>{{/LAUNCHED}}
         <div class="direct">
           <a class="pill" href="{{whatsapp}}" target="_blank" rel="noopener">{{> wa-icon}} WhatsApp</a>

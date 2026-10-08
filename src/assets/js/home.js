@@ -58,6 +58,7 @@ BLOOMS.forEach(([x, y], i) => {
 });
 
 const steps = [...document.querySelectorAll('#steps li')];
+const meterDots = [...hero.querySelectorAll('.meter i')], meterNum = hero.querySelector('.meter b');
 const lede = hero.querySelector('.lede');
 new IntersectionObserver(([e]) => hero.classList.toggle('live', e.isIntersecting)).observe(hero);
 
@@ -226,7 +227,9 @@ function frame() {
   branches.forEach(b => { b.style.strokeDashoffset = b.dataset.l * (1 - ease(clamp((s - +b.dataset.s) / (+b.dataset.d || 1)))); });
   leafEls.forEach(l => l.classList.toggle('on', s >= +l.dataset.s + .5));
   const cur = Math.min(5, Math.floor(s));
-  steps.forEach((li, i) => { li.classList.toggle('on', i <= cur); li.classList.toggle('cur', i === cur); });
+  steps.forEach((li, i) => { li.classList.toggle('on', i <= cur); li.classList.toggle('cur', i === cur); i === cur ? li.setAttribute('aria-current', 'step') : li.removeAttribute('aria-current'); });
+  meterDots.forEach((d, i) => { d.classList.toggle('on', i < cur); d.classList.toggle('cur', i === cur); });
+  if (meterNum.textContent !== String(cur + 1)) meterNum.textContent = cur + 1;
   camera(s);
   hero.classList.toggle('leafy', s >= 1.4);
   lede.style.opacity = narrow.matches ? (1 - clamp((s - .15) / .7)).toFixed(2) : '';

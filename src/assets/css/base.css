@@ -13,6 +13,12 @@
   --display:'Fraunces',Georgia,serif; --body:'Hanken Grotesk',system-ui,sans-serif; --hand:'Caveat',cursive;
   --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");
   --nav-h:68px;
+  /* spacing scale: one rhythm site-wide */
+  --sp-1:.5rem; --sp-2:.75rem; --sp-3:1.25rem; --sp-4:2rem; --sp-5:3rem; --sp-6:4rem;
+  --section:clamp(4rem,2rem + 6vw,7rem);      /* between major sections: 64px on phones → 112px on desktop */
+  --section-s:clamp(3rem,1.5rem + 4vw,5rem);  /* page-hero bottoms, footer top */
+  --card-pad:clamp(1.5rem,1rem + 3vw,4rem);   /* inside coloured cards */
+  --wa-clear:76px;                            /* room the floating WhatsApp button needs at the bottom on phones */
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 16px)}
@@ -27,6 +33,8 @@ a{color:inherit}
 .display em{font-style:italic;color:var(--terra)}
 .hand{font-family:var(--hand);color:var(--terra-ink);font-size:1.5em;line-height:1}
 .eyebrow{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ink-soft)}
+/* heading rhythm: eyebrow → heading → text */
+.eyebrow + .display,.eyebrow + h1,.eyebrow + h2{margin-top:var(--sp-2)}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* ---------- prelaunch ribbon ---------- */
@@ -94,8 +102,8 @@ nav.top[data-open] .menu-btn i::after{transform:translateY(-6px) rotate(-45deg)}
 @media(max-width:860px){.wa-float{padding:.8rem}.wa-float span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}}
 
 /* ---------- footer ---------- */
-.site-foot{background:var(--ink);color:var(--paper);padding:5rem 0 6.5rem;border-radius:48px 48px 0 0;margin-top:6rem}
-.home .site-foot{border-radius:0;margin-top:0;padding-top:2rem}
+.site-foot{background:var(--ink);color:var(--paper);padding:var(--section-s) 0 6.5rem;border-radius:48px 48px 0 0;margin-top:var(--section)}
+.home .site-foot{border-radius:0;margin-top:0;padding-top:var(--sp-4)}
 .site-foot .cols{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:2.5rem}
 .site-foot .mark small{color:color-mix(in srgb,var(--paper) 65%,transparent)}
 .site-foot .tag{margin-top:1rem;font-size:.95rem;color:color-mix(in srgb,var(--paper) 72%,transparent);max-width:28ch}
@@ -104,9 +112,9 @@ nav.top[data-open] .menu-btn i::after{transform:translateY(-6px) rotate(-45deg)}
 .site-foot li{color:color-mix(in srgb,var(--paper) 85%,transparent)}
 .site-foot a{text-underline-offset:3px;text-decoration-color:color-mix(in srgb,var(--paper) 40%,transparent)}
 .site-foot a:hover{color:var(--ochre)}
-.site-foot .base{margin-top:4rem;padding-top:1.5rem;border-top:1px solid rgba(245,239,228,.18);display:flex;flex-wrap:wrap;justify-content:space-between;gap:.6rem 2rem;font-size:.82rem;color:color-mix(in srgb,var(--paper) 62%,transparent)}
+.site-foot .base{margin-top:var(--sp-6);padding-top:1.5rem;border-top:1px solid rgba(245,239,228,.18);display:flex;flex-wrap:wrap;justify-content:space-between;gap:.6rem 2rem;font-size:.82rem;color:color-mix(in srgb,var(--paper) 62%,transparent)}
 @media(max-width:960px){.site-foot .cols{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.site-foot{padding:4rem 0 6rem;border-radius:28px 28px 0 0}.site-foot .cols{grid-template-columns:1fr;gap:2rem}}
+@media(max-width:560px){.site-foot{padding-bottom:6rem;border-radius:28px 28px 0 0}.site-foot .cols{grid-template-columns:1fr;gap:2rem}}
 
 /* ---------- forms (dark surfaces) ---------- */
 form.form{display:grid;gap:1.1rem}

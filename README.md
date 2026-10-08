@@ -35,7 +35,7 @@ src/
   services/ about/ faq/ privacy/
   404.html thanks.html
   _partials/          head, header, footer, next-step block, icons
-  assets/css/         base.css (shared) · home.css · pages.css
+  assets/css/         base.css (shared + spacing scale) · home.css · pages.css
   assets/js/          site.js (menu, reveals) · home.js (scroll scenes)
 tools/
   build.mjs           src → dist
@@ -61,11 +61,19 @@ node tools/hero-frames.mjs 390 844 screenshots/hero        # hero frames (add 'r
 
 The growing tree is the hero (`src/index.html` + `src/assets/js/home.js`):
 - Scroll grows it roots first (Listen & assess), then the trunk, branches and leaves. A "camera" starts close on the roots and pulls back as the tree grows, so a phone screen is never mostly empty. On phones the lede sits in the early sky and fades as the trunk rises.
-- The six therapy steps are captions: a list beside the tree on desktop, one at a time under it on phones.
+- The six therapy steps are captions: a list beside the tree on desktop (the current step sits on a soft card), and on phones a paper caption card under the tree with the step number, title, description and a 6-step progress bar, kept clear of the WhatsApp button.
 - At "Independence" a robin lands, the tree blossoms and dandelion seeds lift off on the wind. They're drawn on one canvas layer from pre-rendered sprites, capped at 14 on mobile and 28 on desktop. Six seeds carry handwritten wins ("write my name", "back to work"…; four on mobile). The wind follows the mouse on desktop and the swipe/scroll speed on phones. At the very end the robin flies off with the seeds.
 - Three seeds float down into later sections (beside each chapter and in the contact section) and sprout, using CSS transform/opacity only.
 - Reduced motion: the grown tree with a few seeds already in the air and the robin perched; nothing moves.
 - Leaves only rustle once they exist and while the tree is on screen.
+
+## Spacing
+
+One scale, defined in `base.css` (`:root`) and used everywhere. Use these values rather than one-off margins:
+- `--section`: space between major sections (64px on phones up to 112px on desktop)
+- `--section-s`: page-hero bottoms and the footer top
+- `--card-pad`: padding inside the coloured cards
+- `--sp-1` … `--sp-6` (.5 / .75 / 1.25 / 2 / 3 / 4rem): eyebrow → heading is `--sp-2`, heading → text is `--sp-3`, text → buttons is `--sp-4`
 
 ## SEO & performance
 
