@@ -31,7 +31,7 @@ No frameworks, no dependencies at build time. `tools/build.mjs` (plain Node) tur
 ```
 site.config.js        settings + the LAUNCHED switch
 src/
-  index.html          home: hero climb → growing tree → what is OT → chapters → about → where → FAQ → form
+  index.html          home: tree hero → what is OT → chapters → about → where → FAQ → form
   services/ about/ faq/ privacy/
   404.html thanks.html
   _partials/          head, header, footer, next-step block, icons
@@ -40,9 +40,8 @@ src/
 tools/
   build.mjs           src → dist
   shoot.mjs           screenshots at 1366 / 390 / 320px + overflow & JS-error check
-  hero-frames.mjs     8 frames through the hero climb at a given size
-  tree-frames.mjs     8 frames through the growing tree
-  make-assets.mjs     regenerates the share image (og.png) + favicons from the logo
+  hero-frames.mjs     12 frames through the hero (tree → seeds → next section) at a given size
+  make-assets.mjs     regenerates the share image (og.png, uses the built tree) + favicons from the logo
   sheet.mjs           contact sheet of screenshots
 netlify.toml          build command + publish dir + security headers
 ```
@@ -55,16 +54,18 @@ npx playwright install chromium # once
 npm run build                   # → dist/
 npm run shots                   # build + screenshots of the home page → screenshots/
 node tools/shoot.mjs /,/services/,/faq/ screenshots/check   # specific pages
-node tools/hero-frames.mjs 390 844 screenshots/hero        # hero climb frames
+node tools/hero-frames.mjs 390 844 screenshots/hero        # hero frames (add 'reduced' for reduced motion)
 ```
 
-## Home hero ("The Climb")
+## Home hero: "Grow, then fly"
 
-Built from the `hero-blocks-v2` prototype: 3D blocks drop in on scroll and a child climbs and plants a seedling, which hands over to the growing tree straight below.
-- Desktop: the blocks tilt with the mouse. Touch devices: a gentle automatic sway.
-- Tap, click or press Enter on a block to see its tooltip.
-- Mobile: headline → scene → caption. A "camera" starts close on the first block and pulls back as the stack grows, so there's no empty sky on load.
-- `prefers-reduced-motion`: shows the finished scene, with nothing moving.
+The growing tree is the hero (`src/index.html` + `src/assets/js/home.js`):
+- Scroll grows it roots first (Listen & assess), then the trunk, branches and leaves. A "camera" starts close on the roots and pulls back as the tree grows, so a phone screen is never mostly empty. On phones the lede sits in the early sky and fades as the trunk rises.
+- The six therapy steps are captions: a list beside the tree on desktop, one at a time under it on phones.
+- At "Independence" a robin lands, the tree blossoms and dandelion seeds lift off on the wind. They're drawn on one canvas layer from pre-rendered sprites, capped at 14 on mobile and 28 on desktop. Six seeds carry handwritten wins ("write my name", "back to work"…; four on mobile). The wind follows the mouse on desktop and the swipe/scroll speed on phones. At the very end the robin flies off with the seeds.
+- Three seeds float down into later sections (beside each chapter and in the contact section) and sprout, using CSS transform/opacity only.
+- Reduced motion: the grown tree with a few seeds already in the air and the robin perched; nothing moves.
+- Leaves only rustle once they exist and while the tree is on screen.
 
 ## SEO & performance
 

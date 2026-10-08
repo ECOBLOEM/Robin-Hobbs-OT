@@ -11,85 +11,14 @@ schema: business
 {{> header}}
 
 <main id="main">
-<!-- ============ HERO: the climb (3D blocks, scroll + tap + tilt) ============ -->
-<section class="climb" id="top">
+<!-- ============ HERO: "Grow, then fly" — the growing tree ============ -->
+<section class="hero" id="journey">
   <div class="stage wrap">
     <div class="copy">
       <p class="eyebrow">Occupational therapy · Waterberg</p>
-      <h1 class="display">One block<br>at a <em>time.</em></h1>
-      <p class="lede">Therapy that helps children and adults grow into the everyday things that matter — play, school, work, home.</p>
-      <div class="caption" aria-live="polite">
-        <div class="step" id="capStep">Start here</div>
-        <p id="capText">Every big skill is built from small ones. Scroll to watch them stack up.</p>
-      </div>
-      <div class="hint" aria-hidden="true"><span>Scroll to build</span><span>Tap a block</span><span class="fine-only">Move your mouse</span></div>
-    </div>
-    <div class="scene-wrap" id="sceneWrap">
-      <svg id="scene" viewBox="0 0 800 700" role="img" aria-label="Toy building blocks stacking into a staircase while a child climbs to the top and plants a seedling">
-        <defs>
-          <linearGradient id="shine" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#fff" stop-opacity=".32"/>
-            <stop offset=".45" stop-color="#fff" stop-opacity=".06"/>
-            <stop offset="1" stop-color="#000" stop-opacity=".10"/>
-          </linearGradient>
-          <radialGradient id="sunG"><stop offset="0" stop-color="#F8D27E"/><stop offset="1" stop-color="#E0A43A"/></radialGradient>
-          <linearGradient id="fadeG" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".12" stop-color="#fff"/><stop offset=".88" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><mask id="fade" maskUnits="userSpaceOnUse" x="-60" y="0" width="920" height="720"><rect id="fadeRect" x="0" y="0" width="800" height="720" fill="url(#fadeG)"/></mask>
-          <linearGradient id="groundG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EDE4D3"/><stop offset="1" stop-color="#EDE4D3" stop-opacity="0"/></linearGradient>
-          <linearGradient id="topG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff"/></linearGradient>
-          <mask id="topFade" maskUnits="userSpaceOnUse" x="-300" y="-1200" width="1400" height="2400"><rect id="topFadeGrad" x="-300" y="0" width="1400" height="110" fill="url(#topG)"/><rect id="topFadeSolid" x="-300" y="110" width="1400" height="1200" fill="#fff"/></mask>
-          <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>
-        </defs>
-        <g id="bg">
-          <g id="sun" opacity="0"><circle cx="330" cy="170" r="80" fill="#F6C86A" opacity=".25" filter="url(#soft)"/><circle cx="330" cy="170" r="44" fill="url(#sunG)"/></g>
-          <g id="clouds" fill="#fff" opacity=".7">
-            <g id="c1"><ellipse cx="0" cy="0" rx="46" ry="16"/><ellipse cx="20" cy="-10" rx="26" ry="16"/><ellipse cx="-18" cy="-6" rx="20" ry="12"/></g>
-            <g id="c2"><ellipse cx="0" cy="0" rx="34" ry="12"/><ellipse cx="14" cy="-8" rx="20" ry="12"/></g>
-          </g>
-          <g mask="url(#fade)"><path id="hills" d="M-60 600 C40 520 120 560 200 520 C290 476 360 540 450 505 C560 462 640 520 860 470 V700 H-60Z" fill="#7E9C76" opacity=".22"/>
-          <path id="hills2" d="M-60 630 C80 580 180 610 300 585 C430 560 540 610 860 560 V700 H-60Z" fill="#7E9C76" opacity=".3"/>
-        <rect x="-60" y="640" width="920" height="80" fill="url(#groundG)"/>
-        <path d="M-60 640 H860" stroke="#2B2620" stroke-width="2" stroke-linecap="round" opacity=".7"/></g></g>
-        <g id="shadows"></g>
-        <g id="cols" mask="url(#topFade)"></g>
-        <g id="seed" opacity="0">
-          <path id="stem" d="M0 0 C-2 -14 3 -26 0 -40" stroke="#2F4A3A" stroke-width="4" fill="none" stroke-linecap="round"/>
-          <path id="leafL" d="M0 -30 C-18 -36 -26 -28 -26 -20 C-14 -18 -4 -22 0 -30Z" fill="#7E9C76"/>
-          <path id="leafR" d="M0 -38 C16 -50 28 -44 30 -34 C18 -30 6 -32 0 -38Z" fill="#5E8466"/>
-        </g>
-        <g id="kid">
-          <ellipse id="kidShadow" cx="0" cy="2" rx="18" ry="4" fill="#2B2620" opacity=".15"/>
-          <path id="legB" stroke="#2F4A3A" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <ellipse id="shoeB" rx="7" ry="4.5" fill="#2B2620"/>
-          <path id="armB" stroke="#B57A55" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M-14 -36 Q-15 -64 0 -64 Q15 -64 14 -36 Z" fill="#8A5A7A"/>
-          <path d="M-14.6 -48 H14.6" stroke="#E0A43A" stroke-width="4"/>
-          <path d="M-13 -36 H13 L12 -28 H-12Z" fill="#2F4A3A"/>
-          <path id="legF" stroke="#2F4A3A" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <ellipse id="shoeF" rx="7" ry="4.5" fill="#2B2620"/>
-          <path id="armF" stroke="#C68B64" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <g id="head">
-            <circle cx="0" cy="-80" r="15" fill="#C68B64"/>
-            <g fill="#2B2620"><circle cx="-11" cy="-90" r="7"/><circle cx="-2" cy="-95" r="8"/><circle cx="9" cy="-92" r="7"/><circle cx="14" cy="-84" r="5"/><circle cx="-14" cy="-82" r="4.5"/></g>
-            <circle cx="-5" cy="-79" r="1.9" fill="#2B2620"/><circle cx="6" cy="-79" r="1.9" fill="#2B2620"/>
-            <circle cx="-9" cy="-73" r="3" fill="#C8643B" opacity=".35"/><circle cx="10" cy="-73" r="3" fill="#C8643B" opacity=".35"/>
-            <path id="mouth" d="M-4 -73 Q1 -69 5 -73" stroke="#2B2620" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-          </g>
-        </g>
-        <g id="fx"></g>
-      </svg>
-      <div class="tip" id="tip" aria-hidden="true"></div>
-      <div class="meter" id="meter" aria-hidden="true"></div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ============ TREE: journey ============ -->
-<section class="grow" id="journey">
-  <div class="stage wrap">
-    <div class="copy">
-      <p class="eyebrow">How therapy works</p>
-      <h2 class="display">Growth you can <em>see.</em></h2>
+      <h1 class="display">Grow, then <em>fly.</em></h1>
+      <p class="lede">Therapy that helps children and adults grow into the everyday things that matter — and then go and live them.</p>
+      <p class="eyebrow steps-label">How therapy works</p>
       <ol id="steps">
         <li data-n="01"><div><b>Listen &amp; assess</b><span>An unhurried first session: your history, how everyday life is going, and what matters most.</span></div></li>
         <li data-n="02"><div><b>Set real-life goals</b><span>Clear, measurable goals, written together in plain language.</span></div></li>
@@ -98,8 +27,10 @@ schema: business
         <li data-n="05"><div><b>Measure &amp; adjust</b><span>Progress tracked session by session, and the plan adapts.</span></div></li>
         <li data-n="06"><div><b>Independence</b><span>The goal was always that you won’t need therapy any more.</span></div></li>
       </ol>
+      <p class="hint" aria-hidden="true">Scroll to grow</p>
     </div>
-    <svg id="tree" viewBox="0 0 600 712" role="img" aria-label="A tree growing from its roots to full bloom, with a robin landing on a branch">
+    <div class="tree-wrap">
+    <svg id="tree" viewBox="0 0 600 712" role="img" aria-label="A tree grows from its roots to full bloom; at the end it releases seeds into the wind and a robin flies off with them">
       <!-- underground cut-away: seed + roots (step 1, assessment) -->
       <path d="M118 606 H482 C474 664 404 704 300 704 C196 704 126 664 118 606Z" fill="#2B2620" opacity=".045"/>
       <g fill="#CDBFA6" opacity=".7"><ellipse cx="190" cy="640" rx="7" ry="4"/><ellipse cx="420" cy="652" rx="5" ry="3"/><ellipse cx="248" cy="684" rx="4" ry="2.5"/><ellipse cx="372" cy="690" rx="6" ry="3.5"/></g>
@@ -129,6 +60,8 @@ schema: business
         <path class="br" data-s="1.3" data-d=".8" fill="none" stroke="#5B4636" stroke-width="5" stroke-linecap="round" d="M372 426 C408 420 446 418 500 412"/>
       </g>
       <g id="leaves"></g>
+      <g id="blooms"></g>
+      <g id="stillSeeds"></g>
       <g id="birdWrap">
         <g id="bird" opacity="0">
           <path id="birdTail" d="M9 -11 L25 -18 L23 -9 Z" fill="#4E3E31"/>
@@ -140,6 +73,7 @@ schema: business
         </g>
       </g>
     </svg>
+    </div>
   </div>
 </section>
 
@@ -163,6 +97,7 @@ schema: business
     <h2 class="display rv">Two chapters. One goal: independence.</h2>
 
     <article class="chapter rv">
+      {{> landing-seed}}
       <div class="num" aria-hidden="true">01</div>
       <h3>Children<small>little hands, big steps</small></h3>
       <div>
@@ -174,6 +109,7 @@ schema: business
     </article>
 
     <article class="chapter rv">
+      {{> landing-seed}}
       <div class="num" aria-hidden="true">02</div>
       <h3>Adults<small>back to everyday life</small></h3>
       <div>
@@ -274,7 +210,8 @@ schema: business
 <section class="contact" id="contact">
   <div class="wrap">
     <div class="grid">
-      <div>
+      <div style="position:relative">
+        {{> landing-seed}}
         <p class="eyebrow">{{^LAUNCHED}}{{openingText}}{{/LAUNCHED}}{{#LAUNCHED}}Book a session{{/LAUNCHED}}</p>
         {{^LAUNCHED}}<h2 class="display" style="margin-top:.8rem">Be first on<br>the <em>list.</em></h2>
         <p class="sub">Leave your details and Robin will contact you personally as soon as the practice opens.</p>{{/LAUNCHED}}

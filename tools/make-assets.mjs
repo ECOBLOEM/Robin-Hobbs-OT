@@ -1,7 +1,8 @@
 // Generates the social sharing image and favicon set into src/.
-// Run after changing the logo or the share image design: node tools/make-assets.mjs
+// Run after changing the logo or the share image design: npm run build && node tools/make-assets.mjs
 import { chromium } from 'playwright';
 import fs from 'node:fs';
+import http from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -9,70 +10,62 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(root, 'src');
 fs.mkdirSync(path.join(SRC, 'assets/icons'), { recursive: true });
 
-// ---- logo mark (blocks + seedling) ----
+// ---- logo mark (seedling + a drifting dandelion seed) ----
 const MARK = `
-  <rect x="4" y="24" width="12" height="12" rx="2" fill="#C8643B"/>
-  <rect x="16" y="14" width="12" height="22" rx="2" fill="#E0A43A"/>
-  <path d="M33 36V16" stroke="#7E9C76" stroke-width="2.4" stroke-linecap="round"/>
-  <ellipse cx="33" cy="11" rx="5" ry="7" fill="#7E9C76"/>`;
+<path d="M4 36 H26" stroke="#2B2620" stroke-opacity=".3" stroke-width="1.6" stroke-linecap="round"/>
+<path d="M15 36 C15 30 14.4 25 15.6 18" stroke="#5E8466" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<path d="M15.2 27 C9 28 4.5 24.5 4 18.5 C10 18 14 21.5 15.2 27Z" fill="#7E9C76"/>
+<path d="M15.6 21.5 C15.6 14.5 20 9.5 26.5 9.5 C26.8 16 22.5 20.5 15.6 21.5Z" fill="#5E8466"/>
+<g transform="rotate(22 32 17)"><path d="M32 21.5 V12.5" stroke="#B9A88F" stroke-width="1" stroke-linecap="round"/><ellipse cx="32" cy="22.6" rx="1.3" ry="2.3" fill="#C8643B"/><g stroke="#E0A43A" fill="#E0A43A" stroke-width="1.05" stroke-linecap="round"><path d="M32 12.5 L26.43 9.78"/><circle cx="26.43" cy="9.78" r=".95" stroke="none"/><path d="M32 12.5 L28.71 7.24"/><circle cx="28.71" cy="7.24" r=".95" stroke="none"/><path d="M32 12.5 L32.00 6.30"/><circle cx="32.00" cy="6.30" r=".95" stroke="none"/><path d="M32 12.5 L35.29 7.24"/><circle cx="35.29" cy="7.24" r=".95" stroke="none"/><path d="M32 12.5 L37.57 9.78"/><circle cx="37.57" cy="9.78" r=".95" stroke="none"/></g></g>`;
 const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="2 2 36 36">${MARK}</svg>\n`;
 fs.writeFileSync(path.join(SRC, 'favicon.svg'), favicon);
 
-// ---- share image: hero staircase in miniature ----
-const shade = (hex, amt) => { const n = parseInt(hex.slice(1), 16); const f = v => Math.round(amt < 0 ? v * (1 + amt) : v + (255 - v) * amt).toString(16).padStart(2, '0'); return `#${f(n >> 16)}${f(n >> 8 & 255)}${f(n & 255)}`; };
-const COLS = ['#C8643B', '#E0A43A', '#7E9C76', '#6FA3BC', '#8A5A7A', '#2F4A3A'];
-const B = 62, X0 = 40, G = 560, DX = 14, DY = 12;
-let blocks = '';
-COLS.forEach((c, i) => {
-  for (let j = 0; j <= i; j++) {
-    const x = X0 + i * B, y = G - (j + 1) * B, base = j === i ? c : shade(c, .18 + j * .02);
-    blocks += `<polygon points="${x + B},${y} ${x + B + DX},${y - DY} ${x + B + DX},${y + B - DY} ${x + B},${y + B}" fill="${shade(base, -.28)}"/>`;
-    blocks += `<polygon points="${x},${y} ${x + B},${y} ${x + B + DX},${y - DY} ${x + DX},${y - DY}" fill="${shade(base, .22)}"/>`;
-    blocks += `<rect x="${x}" y="${y}" width="${B}" height="${B}" rx="5" fill="${base}"/>`;
-    blocks += `<rect x="${x + 7}" y="${y + 7}" width="${B - 14}" height="${B - 14}" rx="6" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="2"/>`;
-  }
-});
-const topX = X0 + 5 * B + B / 2, topY = G - 6 * B;
-const kid = `<g transform="translate(${topX - 10} ${topY - 2}) scale(.95)">
-  <path d="M3 -30 L4 -18 L5 0 M-3 -30 L-4 -17 L-6 0" stroke="#2F4A3A" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M-14 -36 Q-15 -64 0 -64 Q15 -64 14 -36 Z" fill="#8A5A7A"/><path d="M-14.6 -48 H14.6" stroke="#E0A43A" stroke-width="4"/>
-  <path d="M10 -58 L18 -74 L24 -94 M-10 -58 L-18 -74 L-24 -94" stroke="#C68B64" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="0" cy="-80" r="15" fill="#C68B64"/>
-  <g fill="#2B2620"><circle cx="-11" cy="-90" r="7"/><circle cx="-2" cy="-95" r="8"/><circle cx="9" cy="-92" r="7"/><circle cx="14" cy="-84" r="5"/><circle cx="-14" cy="-82" r="4.5"/></g>
-  <circle cx="-5" cy="-79" r="1.9" fill="#2B2620"/><circle cx="6" cy="-79" r="1.9" fill="#2B2620"/>
-  <path d="M-5 -74 Q0 -66 6 -74Z" fill="#2B2620"/></g>
-  <g transform="translate(${topX + 30} ${topY - 2}) scale(.85)"><path d="M0 0 C-2 -14 3 -26 0 -40" stroke="#2F4A3A" stroke-width="4" fill="none" stroke-linecap="round"/>
-  <path d="M0 -30 C-18 -36 -26 -28 -26 -20 C-14 -18 -4 -22 0 -30Z" fill="#7E9C76"/><path d="M0 -38 C16 -50 28 -44 30 -34 C18 -30 6 -32 0 -38Z" fill="#5E8466"/></g>`;
-const grain = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E")`;
-const og = `<!doctype html><html><head><meta charset="utf-8">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..800,50..100;1,9..144,300..800,50..100&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+// ---- share image: the grown tree with seeds in the air (rendered from the built site) ----
+const ogHtml = treePng => `<!doctype html><html><head><meta charset="utf-8">
 <style>
+@font-face{font-family:Fraunces;src:url(${fontUrl('fraunces-latin')}) format('woff2');font-weight:300 500}
+@font-face{font-family:Fraunces;font-style:italic;src:url(${fontUrl('fraunces-italic-latin')}) format('woff2');font-weight:400}
+@font-face{font-family:'Hanken Grotesk';src:url(${fontUrl('hanken-grotesk-latin')}) format('woff2');font-weight:400 600}
 *{margin:0;box-sizing:border-box}
-body{width:1200px;height:630px;background:#F5EFE4 ${grain};font-family:'Hanken Grotesk';color:#2B2620;display:grid;grid-template-columns:590px 1fr;overflow:hidden;position:relative}
-.copy{padding:78px 0 0 78px}
+body{width:1200px;height:630px;background:#F5EFE4;font-family:'Hanken Grotesk';color:#2B2620;overflow:hidden;position:relative}
+.copy{position:absolute;left:78px;top:78px;width:600px}
 .mark{display:flex;align-items:center;gap:14px}
-.mark svg{width:54px;height:54px}
+.mark svg{width:58px;height:58px}
 .mark b{font-family:Fraunces;font-weight:400;font-size:30px;font-variation-settings:"SOFT" 100;line-height:1}
 .mark small{display:block;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#5E554A;margin-top:4px}
-h1{font-family:Fraunces;font-weight:400;font-variation-settings:"SOFT" 100;font-size:96px;line-height:.98;letter-spacing:-.02em;margin-top:62px}
+h1{font-family:Fraunces;font-weight:400;font-variation-settings:"SOFT" 100;font-size:104px;line-height:.98;letter-spacing:-.02em;margin-top:70px}
 h1 em{color:#C8643B}
-p{margin-top:30px;font-size:24px;color:#5E554A;line-height:1.4}
-.band{position:absolute;left:0;right:0;bottom:0;height:22px;background:#2F4A3A}
-.land{position:absolute;inset:0;width:1200px;height:630px;z-index:0}.copy,.art{position:relative;z-index:1}
-.art svg{position:absolute;right:30px;bottom:22px;width:560px;height:600px}
+p{margin-top:28px;font-size:25px;color:#5E554A;line-height:1.4}
+.tree{position:absolute;right:40px;bottom:-6px;height:640px}
+.band{position:absolute;left:0;right:0;bottom:0;height:18px;background:#2F4A3A}
 </style></head><body>
 <div class="copy">
   <div class="mark"><svg viewBox="0 0 40 40">${MARK}</svg><div><b>Robin Hobbs</b><small>Occupational Therapy</small></div></div>
-  <h1>One block<br>at a <em>time.</em></h1>
+  <h1>Grow, then <em>fly.</em></h1>
   <p>Occupational therapy for children &amp; adults<br>across the Waterberg, Limpopo</p>
 </div>
-<div class="art"><svg viewBox="0 0 520 600">
-  <circle cx="150" cy="120" r="70" fill="#F6C86A" opacity=".25"/><circle cx="150" cy="120" r="40" fill="#E0A43A"/>
-  ${blocks}${kid}
-</svg></div>
-<svg class="land" viewBox="0 0 1200 630" preserveAspectRatio="none"><path d="M0 560 C180 520 330 548 520 530 C700 512 820 470 960 470 C1060 470 1140 500 1200 488 V608 H0Z" fill="#7E9C76" opacity=".2"/><path d="M0 569 H1200" stroke="#2B2620" stroke-width="2" opacity=".6"/><rect x="0" y="570" width="1200" height="40" fill="#EDE4D3"/></svg>
+<img class="tree" src="data:image/png;base64,${treePng.toString('base64')}">
 <div class="band"></div>
 </body></html>`;
+const fontUrl = n => 'data:font/woff2;base64,' + fs.readFileSync(path.join(SRC, 'assets/fonts', n + '.woff2')).toString('base64');
+
+async function treeShot(browser) {
+  const DIST = path.join(root, 'dist');
+  if (!fs.existsSync(path.join(DIST, 'index.html'))) throw new Error('Run `npm run build` first');
+  const types = { '.html': 'text/html', '.js': 'text/javascript', '.woff2': 'font/woff2' };
+  const server = http.createServer((req, res) => {
+    let p = decodeURIComponent(req.url.split('?')[0]); if (p.endsWith('/')) p += 'index.html';
+    const f = path.join(DIST, p); if (!fs.existsSync(f)) { res.writeHead(404); return res.end(); }
+    res.writeHead(200, { 'content-type': types[path.extname(f)] || 'application/octet-stream' }); fs.createReadStream(f).pipe(res);
+  }).listen(0);
+  const page = await browser.newPage({ viewport: { width: 1366, height: 900 }, deviceScaleFactor: 1.4, reducedMotion: 'reduce' });
+  await page.goto(`http://localhost:${server.address().port}/`, { waitUntil: 'networkidle' });
+  await page.addStyleTag({ content: '.wa-float,.ribbon{display:none!important}html,body,.hero{background:transparent!important}' });
+  await page.waitForTimeout(500);
+  const buf = await page.locator('#tree').screenshot({ omitBackground: true });
+  await page.close(); server.close();
+  return buf;
+}
 
 // ---- render ----
 const browser = await chromium.launch();
@@ -84,7 +77,7 @@ const shot = async (html, w, h, file) => {
   await page.close();
   return buf;
 };
-await shot(og, 1200, 630, path.join(SRC, 'assets/og.png'));
+await shot(ogHtml(await treeShot(browser)), 1200, 630, path.join(SRC, 'assets/og.png'));
 
 const icon = (size, bg, pad) => `<html data-transparent><body style="margin:0;width:${size}px;height:${size}px;${bg ? `background:${bg}` : 'background:transparent'}">
 <svg viewBox="2 2 36 36" style="display:block;width:${size - 2 * pad}px;height:${size - 2 * pad}px;margin:${pad}px">${MARK}</svg></body></html>`;

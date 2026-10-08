@@ -3,44 +3,6 @@
    ========================================================= */
 section{position:relative}
 
-/* ---------- HERO: the climb ---------- */
-.climb{height:520vh;position:relative}
-.climb .stage{position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));height:calc(100svh - var(--nav-h));display:grid;grid-template-columns:.9fr 1.25fr;align-items:center;gap:2rem}
-.climb h1{font-size:clamp(2.8rem,7vw,6.2rem)}
-.climb .lede{max-width:30ch;margin-top:1.4rem;font-size:1.15rem;color:var(--ink-soft)}
-.caption{margin-top:2rem;min-height:6rem;border-left:3px solid var(--ochre);padding-left:1rem}
-.caption .step{font-family:var(--hand);font-size:1.7rem;color:var(--terra-ink);line-height:1}
-.caption p{font-size:1rem;max-width:34ch;margin-top:.2rem}
-.hint{margin-top:1.2rem;font-size:.85rem;color:var(--ink-soft);display:flex;gap:1.2rem;flex-wrap:wrap}
-.hint span::before{content:"●";color:var(--ochre);margin-right:.4rem;font-size:.7em}
-@media(pointer:coarse){.hint .fine-only{display:none}}
-.scene-wrap{position:relative;height:100%;display:flex;align-items:center}
-#scene{width:100%;height:auto;max-height:calc(100vh - 100px);max-height:calc(100svh - 100px);overflow:hidden;touch-action:pan-y} /* clip: falling blocks never cross the header */
-#scene .col{cursor:pointer;outline:none;transform-box:fill-box;transform-origin:50% 100%;transition:transform .35s cubic-bezier(.3,1.5,.5,1)}
-#scene .col:hover,#scene .col:focus-visible{transform:translateY(-10px)}
-#scene .col:focus-visible rect:first-of-type{stroke:var(--ink);stroke-width:3}
-#scene .col.wiggle{animation:wiggle .6s ease}
-@keyframes wiggle{0%,100%{transform:translateY(-10px) rotate(0)}25%{transform:translateY(-22px) rotate(-3deg)}60%{transform:translateY(-6px) rotate(2deg)}}
-.tip{position:absolute;left:0;top:0;pointer-events:none;background:var(--ink);color:var(--paper);font-size:.85rem;line-height:1.4;padding:.55rem .8rem;border-radius:12px;width:max-content;max-width:220px;opacity:0;transform:translate(-50%,-110%) scale(.96);transition:opacity .2s,transform .2s;z-index:5}
-.tip b{display:block;font-family:var(--display);font-weight:500;font-size:1.05rem;color:var(--ochre)}
-.tip.on{opacity:1;transform:translate(-50%,-120%) scale(1)}
-.meter{position:absolute;right:-8px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column-reverse;gap:8px}
-.meter span{width:6px;height:22px;border-radius:3px;background:color-mix(in srgb,var(--ink) 12%,transparent);transition:background .3s}
-.meter span.on{background:var(--terra)}
-@media(max-width:860px){
-  .climb{height:460vh}
-  /* headline → scene → caption, packed to the top (no empty sky above) */
-  .climb .stage{grid-template-columns:1fr;align-content:start;gap:0;padding-top:clamp(1rem,3svh,2rem)}
-  .climb .copy{display:contents}
-  .climb .eyebrow{order:1}
-  .climb h1{order:2;font-size:clamp(2.1rem,10vw,3rem);margin-top:.3rem}
-  .climb .scene-wrap{order:3;height:auto;margin-top:.6rem}
-  .climb .caption{order:4;margin-top:.8rem;min-height:5.2rem;padding-right:60px}
-  .climb .lede,.climb .hint,.meter{display:none}
-  #scene{height:min(112vw,50svh);max-height:none}
-}
-@media(max-width:860px) and (max-height:700px){.climb .eyebrow{display:none}.caption{min-height:4.6rem}}
-
 /* ---------- WHAT IS OT ---------- */
 .what{padding:9rem 0 7rem}
 .what .big{font-size:clamp(2rem,4.6vw,3.9rem);max-width:20ch}
@@ -68,29 +30,74 @@ section{position:relative}
 .chapter .more:hover{color:var(--ochre)}
 @media(max-width:860px){.who{padding:5rem 0;border-radius:28px 28px 0 0}.chapter{grid-template-columns:1fr;gap:1rem}.chapter .num{font-size:3rem}}
 
-/* ---------- TREE: the journey ---------- */
-.grow{height:380vh;background:var(--paper-2) var(--grain)}
-.grow .stage{position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));height:calc(100svh - var(--nav-h));display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:3rem}
-.grow h2{font-size:clamp(2.2rem,4.8vw,4rem)}
-.grow h2 em{color:#5E7D57}
-.grow ol{list-style:none;margin-top:2.2rem;display:grid;gap:1.1rem;counter-reset:s}
-.grow li{counter-increment:s;display:grid;grid-template-columns:2.4rem 1fr;gap:.8rem;opacity:.45;transform:translateX(-8px);transition:opacity .45s,transform .45s}
-.grow li.on{opacity:1;transform:none}
-.grow li::before{content:attr(data-n);font-family:var(--display);font-size:1.1rem;color:var(--terra-ink);padding-top:.15rem}
-.grow li b{font-family:var(--display);font-weight:500;font-size:1.3rem;display:block;line-height:1.2}
-.grow li span{font-size:.95rem;color:var(--ink-soft)}
-#tree{width:100%;max-height:calc(100vh - 120px)}
+/* ---------- HERO: "Grow, then fly" (the tree) ---------- */
+body:has(.ribbon){--ribbon-h:38px}
+.hero{height:560vh;position:relative}
+.hero .stage{position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));height:calc(100svh - var(--nav-h) - var(--ribbon-h,0px));display:grid;grid-template-columns:.95fr 1.05fr;align-items:center;gap:2.5rem}
+.hero h1{font-size:clamp(3rem,6.6vw,5.8rem);margin-top:.6rem}
+.hero .lede{max-width:33ch;margin-top:1.2rem;font-size:1.12rem;color:var(--ink-soft)}
+.hero .steps-label{margin-top:2.2rem}
+.hero ol{list-style:none;margin-top:.9rem;display:grid;gap:.35rem}
+.hero li{display:grid;grid-template-columns:2.2rem 1fr;gap:.6rem;opacity:.5;transition:opacity .4s}
+.hero li.on{opacity:.85}
+.hero li.cur{opacity:1}
+.hero li::before{content:attr(data-n);font-family:var(--display);font-size:1rem;color:var(--terra-ink);padding-top:.12rem}
+.hero li b{font-family:var(--display);font-weight:500;font-size:1.15rem;display:block;line-height:1.3}
+.hero li span{display:none;font-size:.95rem;color:var(--ink-soft);max-width:38ch;margin-top:.15rem}
+.hero li.cur span{display:block}
+.hero .hint{margin-top:1.4rem;font-size:.85rem;color:var(--ink-soft)}
+.hero .hint::before{content:"↓";display:inline-block;margin-right:.5rem;color:var(--terra);animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateY(4px)}}
+.tree-wrap{height:calc(100% - 2rem);min-height:0}
+#tree{width:100%;height:100%;display:block}
 #tree .leaf{transform-box:fill-box;transform-origin:center;transform:scale(0);transition:transform .6s cubic-bezier(.3,1.6,.5,1)}
 #tree .leaf.on{transform:scale(1)}
-#tree .fruit{opacity:0;transition:opacity .6s}
-#tree .fruit.on{opacity:1}
+#tree .bloom{transform-box:fill-box;transform-origin:center;transform:scale(0);transition:transform .5s cubic-bezier(.3,1.7,.5,1)}
+#tree .bloom.on{transform:scale(1)}
 @media(max-width:860px){
-  .grow .stage{grid-template-columns:1fr;gap:0;align-content:center}
-  .grow .copy{order:2}
-  .grow h2{font-size:1.9rem}
-  .grow ol{margin-top:1rem;gap:.5rem}
-  .grow li{display:none}.grow li.cur{display:grid;opacity:1;transform:none}
-  #tree{max-height:46vh}
+  .hero{height:520vh}
+  /* phone: headline → tree (fills the space) → one caption */
+  .hero .stage{grid-template-columns:1fr;grid-template-rows:auto auto minmax(0,1fr) auto;align-items:stretch;gap:0;padding:clamp(.8rem,2.5svh,1.6rem) 0 clamp(.6rem,2svh,1.2rem)}
+  .hero .copy{display:contents}
+  .hero .copy > .eyebrow:first-child{grid-row:1}
+  .hero h1{grid-row:2;font-size:clamp(2.5rem,12vw,3.4rem);margin-top:.3rem}
+  .tree-wrap{grid-row:3;grid-column:1;height:auto;margin:.4rem 0}
+  .hero ol{grid-row:4;margin-top:0;min-height:6.4rem;padding-right:56px}
+  .hero li{display:none}
+  .hero li.cur{display:grid;opacity:1}
+  /* while the tree is only roots, the lede sits in the empty sky, then fades as the trunk rises */
+  .hero .lede{grid-row:3;grid-column:1;align-self:start;z-index:1;margin-top:1.4rem;font-size:1.05rem;max-width:28ch;pointer-events:none}
+  .hero .lede::after{content:"Scroll to grow ↓";display:block;margin-top:.9rem;font-size:.85rem;color:var(--terra-ink)}
+  .hero .steps-label,.hero .hint{display:none}
+}
+@media(max-width:860px) and (max-height:680px){.hero .copy > .eyebrow:first-child{display:none}.hero ol{min-height:5.6rem}}
+
+/* ---------- seeds: canvas layer (drifting) + landing seeds that sprout ---------- */
+.seed-sky{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:45}
+.landing{position:absolute;right:0;top:1rem;width:84px;height:126px;pointer-events:none}
+.contact .landing{right:auto;left:min(19rem,70%);top:-1.2rem}
+.landing svg{width:100%;height:100%;overflow:visible}
+.ls-ground{stroke:#2B2620;stroke-opacity:.25;stroke-width:1.2}
+.ls-stem{stroke:#2F4A3A}
+.ls-stalk{stroke:#5E554A}
+.who .ls-ground,.contact .ls-ground{stroke:#F5EFE4;stroke-opacity:.35}
+.who .ls-stem,.contact .ls-stem{stroke:#A3B98A}
+.who .ls-stalk,.contact .ls-stalk{stroke:#D9CFBF}
+.ls-sprout{transform-box:fill-box;transform-origin:50% 100%}
+.ls-fluff{transform-box:fill-box;transform-origin:50% 100%}
+.js .landing .ls-seed{opacity:0;transform:translate(-46px,-150px) rotate(-24deg)}
+.js .landing .ls-sprout{transform:scale(0)}
+.landing.landed .ls-seed{animation:seedfall 2.8s cubic-bezier(.3,.55,.35,1) forwards}
+.landing.landed .ls-fluff{animation:fluffoff 1.4s 2.7s ease-out forwards}
+.landing.landed .ls-sprout{animation:sprout 1s 2.8s cubic-bezier(.3,1.6,.5,1) forwards}
+@keyframes seedfall{0%{opacity:0;transform:translate(-46px,-150px) rotate(-24deg)}12%{opacity:1}38%{transform:translate(14px,-92px) rotate(14deg)}68%{transform:translate(-8px,-30px) rotate(-7deg)}100%{opacity:1;transform:none}}
+@keyframes fluffoff{to{opacity:.35;transform:translate(3px,-4px) rotate(8deg)}}
+@keyframes sprout{to{transform:scale(1)}}
+@media(max-width:860px){.landing{top:1.6rem;width:66px;height:99px}.contact .landing{left:auto;right:0;top:-.6rem}}
+@media (prefers-reduced-motion:reduce){
+  .js .landing .ls-seed{opacity:1;transform:none}
+  .js .landing .ls-sprout{transform:none}
+  .js .landing .ls-fluff{opacity:.35}
 }
 
 /* ---------- ABOUT ---------- */
@@ -147,7 +154,7 @@ section{position:relative}
 
 /* ---------- TREE extras: rustle, robin ---------- */
 #tree .tuft{transform-box:view-box;animation:rustle 4s ease-in-out infinite;animation-play-state:paused}
-.grow.live #tree .tuft{animation-play-state:running}
+.hero.live.leafy #tree .tuft{animation-play-state:running} /* only once there are leaves to rustle */
 @keyframes rustle{0%,100%{transform:rotate(-1.1deg)}50%{transform:rotate(1.3deg) translateX(1.5px)}}
 #perch,#birdWrap{transform-box:view-box;transform-origin:372px 426px}
 #perch.dip,#birdWrap.dip{animation:dip .7s cubic-bezier(.3,1.6,.5,1)}
@@ -155,8 +162,8 @@ section{position:relative}
 #birdHead,#birdTail{transform-box:fill-box}
 #birdHead{transform-origin:70% 90%}
 #birdTail{transform-origin:0% 50%}
-.grow.live #birdWrap.perched #birdHead{animation:peek 5.5s ease-in-out 1s infinite}
-.grow.live #birdWrap.perched #birdTail{animation:flick 4.2s ease-in-out .4s infinite}
+.hero.live #birdWrap.perched #birdHead{animation:peek 5.5s ease-in-out 1s infinite}
+.hero.live #birdWrap.perched #birdTail{animation:flick 4.2s ease-in-out .4s infinite}
 @keyframes peek{0%,40%,100%{transform:rotate(0)}48%,62%{transform:rotate(-14deg)}70%,85%{transform:rotate(8deg)}}
 @keyframes flick{0%,80%,100%{transform:rotate(0)}86%{transform:rotate(-22deg)}92%{transform:rotate(6deg)}}
 
@@ -166,3 +173,4 @@ section{position:relative}
 .sig-ink,.sig-dot{stroke:var(--terra-ink);stroke-width:2.6}
 .sig-line{stroke:var(--ochre);stroke-width:2}
 .sig-pencil{transition:opacity .5s}
+.chapter{position:relative}
