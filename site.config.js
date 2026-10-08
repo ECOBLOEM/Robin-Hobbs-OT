@@ -30,7 +30,7 @@ export default {
   payment: 'Cash practice · rates on request',
 
   // ── Web ────────────────────────────────────────────────────────────
-  siteUrl: 'https://robin-hobbs-ot.netlify.app', // change when the domain is connected
+  siteUrl: 'https://robinhobbsot.netlify.app', // change when the domain is connected
 
   // Used for Google's structured data (search results / maps)
   locality: 'Modimolle',
