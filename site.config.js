@@ -31,4 +31,10 @@ export default {
 
   // ── Web ────────────────────────────────────────────────────────────
   siteUrl: 'https://robin-hobbs-ot.netlify.app', // change when the domain is connected
+
+  // Used for Google's structured data (search results / maps)
+  locality: 'Modimolle',
+  region: 'Limpopo',
+  languageCodes: ['en', 'af'],
+  openingHours: { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '08:00', closes: '17:00' },
 };

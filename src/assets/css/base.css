@@ -1,6 +1,11 @@
 /* =========================================================
    Robin Hobbs OT — shared styles (every page)
    ========================================================= */
+/* self-hosted fonts (SIL Open Font Licence) */
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:300 500;font-display:swap;src:url(/assets/fonts/fraunces-latin.woff2) format('woff2');unicode-range:U+0020-007E,U+00A0-00FF,U+0131,U+0152-0153,U+2010-2027,U+2030-203A,U+2044,U+20AC,U+2122,U+2190-2193,U+2212}
+@font-face{font-family:'Fraunces';font-style:italic;font-weight:400;font-display:swap;src:url(/assets/fonts/fraunces-italic-latin.woff2) format('woff2');unicode-range:U+0020-007E,U+00A0-00FF,U+0131,U+0152-0153,U+2010-2027,U+2030-203A,U+2044,U+20AC,U+2122,U+2190-2193,U+2212}
+@font-face{font-family:'Hanken Grotesk';font-style:normal;font-weight:400 600;font-display:swap;src:url(/assets/fonts/hanken-grotesk-latin.woff2) format('woff2');unicode-range:U+0020-007E,U+00A0-00FF,U+0131,U+0152-0153,U+2010-2027,U+2030-203A,U+2044,U+20AC,U+2122,U+2190-2193,U+2212}
+@font-face{font-family:'Caveat';font-style:normal;font-weight:500 700;font-display:swap;src:url(/assets/fonts/caveat-latin.woff2) format('woff2');unicode-range:U+0020-007E,U+00A0-00FF,U+0131,U+0152-0153,U+2010-2027,U+2030-203A,U+2044,U+20AC,U+2122,U+2190-2193,U+2212}
 :root{
   --paper:#F5EFE4; --paper-2:#EDE4D3; --ink:#2B2620; --ink-soft:#5E554A;
   --terra:#C8643B; --terra-ink:#A64B25; /* terra darkened for AA text on paper */
@@ -26,7 +31,7 @@ a{color:inherit}
 
 /* ---------- prelaunch ribbon ---------- */
 .ribbon{background:var(--forest);color:var(--paper);text-align:center;font-size:.85rem;padding:.55rem 1rem;letter-spacing:.02em}
-.ribbon b{color:var(--ochre);font-weight:600}
+.ribbon b{color:#F0B957;font-weight:600} /* lighter ochre: AA on forest */
 .ribbon b{white-space:nowrap}
 @media(max-width:480px){.ribbon .ribbon-link{display:none}}
 .ribbon a{color:var(--paper);text-underline-offset:3px;white-space:nowrap}

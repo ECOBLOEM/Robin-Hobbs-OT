@@ -33,7 +33,7 @@
 .cond h3{font-family:var(--display);font-weight:400;font-size:clamp(1.5rem,2.6vw,1.9rem);line-height:1.15}
 .cond .pair{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem 2.5rem;margin-top:1rem}
 .cond h4{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--terra-ink);margin-bottom:.4rem}
-.svc.dark .cond h4{color:var(--ochre)}
+.svc.dark .cond h4{color:#F0B957}
 .cond p,.cond li{font-size:1rem;color:var(--ink-soft)}
 .svc.dark .cond p,.svc.dark .cond li{color:color-mix(in srgb,var(--paper) 84%,transparent)}
 .cond ul{padding-left:1.1rem;display:grid;gap:.2rem}

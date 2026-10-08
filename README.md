@@ -41,6 +41,8 @@ tools/
   build.mjs           src → dist
   shoot.mjs           screenshots at 1366 / 390 / 320px + overflow & JS-error check
   hero-frames.mjs     8 frames through the hero climb at a given size
+  tree-frames.mjs     8 frames through the growing tree
+  make-assets.mjs     regenerates the share image (og.png) + favicons from the logo
   sheet.mjs           contact sheet of screenshots
 netlify.toml          build command + publish dir + security headers
 ```
@@ -63,6 +65,13 @@ Built from the `hero-blocks-v2` prototype: 3D blocks drop in on scroll and a chi
 - Tap, click or press Enter on a block to see its tooltip.
 - Mobile: headline → scene → caption. A "camera" starts close on the first block and pulls back as the stack grows, so there's no empty sky on load.
 - `prefers-reduced-motion`: shows the finished scene, with nothing moving.
+
+## SEO & performance
+
+- Every page has its own title and description (front matter), canonical URL, Open Graph / social tags and the share image `src/assets/og.png` (1200×630).
+- The build writes `sitemap.xml`, `robots.txt` and `site.webmanifest` from `siteUrl`, and adds structured data: `MedicalBusiness` on the home page (phone, hours, areas, languages, address once `rooms` is set) and `FAQPage` on /faq/ (built from the questions on that page).
+- Fonts are self-hosted, trimmed to the weights and characters used, and preloaded. All CSS is inlined at build time. There are no third-party requests.
+- Lighthouse (mobile, local): Performance 97–99, Accessibility 100, Best Practices 100, SEO 100 on every page. Run it again on the live Netlify URL after deploying.
 
 ## Forms
 

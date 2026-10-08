@@ -57,6 +57,29 @@ function frontMatter(src) {
   return [meta, src.slice(m[0].length)];
 }
 
+// ---- structured data (JSON-LD) ----
+const strip = h => h.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+function schemaFor(page, html) {
+  if (page.schema === 'business') {
+    const c = config;
+    return {
+      '@context': 'https://schema.org', '@type': 'MedicalBusiness', '@id': `${c.siteUrl}/#practice`,
+      name: c.name, url: `${c.siteUrl}/`, description: page.description,
+      telephone: c.phoneIntl, ...(c.email && { email: c.email }),
+      image: `${c.siteUrl}/assets/og.png`, logo: `${c.siteUrl}/assets/icons/icon-512.png`,
+      address: { '@type': 'PostalAddress', ...(c.rooms && { streetAddress: c.rooms }), addressLocality: c.locality, addressRegion: c.region, addressCountry: 'ZA' },
+      areaServed: c.areas.map(name => ({ '@type': 'City', name })),
+      openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: c.openingHours.days, opens: c.openingHours.opens, closes: c.openingHours.closes }],
+      knowsLanguage: c.languageCodes,
+      employee: { '@type': 'Person', name: c.therapist, jobTitle: 'Occupational Therapist', url: `${c.siteUrl}/about/` },
+    };
+  }
+  if (page.schema === 'faq') {
+    const qs = [...html.matchAll(/<details><summary>([\s\S]*?)<\/summary><div>([\s\S]*?)<\/div><\/details>/g)];
+    return { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: qs.map(([, q, a]) => ({ '@type': 'Question', name: strip(q), acceptedAnswer: { '@type': 'Answer', text: strip(a) } })) };
+  }
+}
+
 const pages = [];
 fs.rmSync(OUT, { recursive: true, force: true });
 (function walk(dir) {
@@ -73,9 +96,29 @@ fs.rmSync(OUT, { recursive: true, force: true });
     let html = render(body, { ...data, page });
     // mark the current page in the nav
     html = html.replace(new RegExp(`(<a href="${urlPath}" data-nav)`, 'g'), '$1 aria-current="page"');
+    // inline the (small) stylesheets: no render-blocking CSS requests
+    html = html.replace(/<link rel="stylesheet" href="\/assets\/css\/([\w-]+)\.css">/g, (_, n) =>
+      `<style>${fs.readFileSync(path.join(SRC, 'assets/css', n + '.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s*\n\s*/g, '\n').trim()}</style>`);
+    const ld = schemaFor(page, html);
+    if (ld) html = html.replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`);
     fs.writeFileSync(dest, html);
     pages.push(page);
   }
 })(SRC);
+
+// ---- sitemap, robots, manifest ----
+const today = new Date().toISOString().slice(0, 10);
+const indexable = pages.filter(p => !p.noindex).sort((a, b) => a.path.localeCompare(b.path));
+fs.writeFileSync(path.join(OUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${indexable.map(p => `  <url><loc>${p.url}</loc><lastmod>${today}</lastmod></url>`).join('\n')}
+</urlset>
+`);
+fs.writeFileSync(path.join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${config.siteUrl}/sitemap.xml\n`);
+fs.writeFileSync(path.join(OUT, 'site.webmanifest'), JSON.stringify({
+  name: config.name, short_name: 'Robin Hobbs OT', start_url: '/', display: 'browser',
+  background_color: '#F5EFE4', theme_color: '#F5EFE4',
+  icons: [192, 512].map(s => ({ src: `/assets/icons/icon-${s}.png`, sizes: `${s}x${s}`, type: 'image/png' })),
+}, null, 2));
 
 console.log(`Built ${pages.length} pages → dist/ (LAUNCHED: ${config.LAUNCHED})`);
