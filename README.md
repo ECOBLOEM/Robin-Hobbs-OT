@@ -33,7 +33,7 @@ No frameworks, no dependencies at build time. `tools/build.mjs` (plain Node) tur
 site.config.js        settings + the LAUNCHED switch
 src/
   index.html          home: tree hero → what is OT → chapters → about → where → FAQ → form
-  services/ about/ faq/ privacy/
+  services/ for-parents/ about/ faq/ privacy/
   404.html thanks.html
   _partials/          head, header, footer, next-step block, icons
   assets/css/         base.css (shared + spacing scale) · home.css · pages.css
@@ -102,5 +102,6 @@ Netlify Forms, form name `contact`, honeypot `bot-field`, success page `/thanks.
 - [x] Robin's portrait (original in `src/assets/img/_originals/robin.jpg`; to replace it, swap that file and run `node tools/make-portrait.mjs`, adjusting `CROP` if the framing changes)
 - [ ] Photos of the rooms (`src/assets/img/`)
 - [ ] Robin to review the About page story in her own words
+- [ ] Robin to review the **For parents** page (`src/for-parents/`, DRAFT): the signs listed for each age group, the wording of "What happens next", and that nothing reads as a diagnosis or a promise
 - [ ] Confirm the cancellation policy (`src/faq/`, marked TODO)
 - [ ] Exact opening date (optional countdown on the ribbon)

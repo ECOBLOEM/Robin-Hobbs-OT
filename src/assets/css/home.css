@@ -26,7 +26,7 @@ section{position:relative}
 .chapter:hover li{background:var(--paper);color:var(--forest)}
 .chapter p{margin-top:1rem;color:color-mix(in srgb,var(--paper) 82%,transparent);font-size:1rem;max-width:46ch}
 .chapter .training{font-family:var(--hand);font-size:1.35rem;color:#F0B957;line-height:1.2}
-.chapter .more{display:inline-block;margin-top:1.2rem;color:var(--paper);text-underline-offset:4px;font-size:.95rem}
+.chapter .more{display:inline-block;margin:var(--sp-3) var(--sp-4) 0 0;color:var(--paper);text-underline-offset:4px;font-size:.95rem}
 .chapter .more:hover{color:var(--ochre)}
 @media(max-width:860px){.who{border-radius:28px 28px 0 0}.chapter{grid-template-columns:1fr;gap:var(--sp-2);padding:var(--sp-4) 0}.chapter .num{font-size:3rem}}
 
