@@ -9,6 +9,7 @@
 //   {{#key}}…{{/key}}         render only if key is truthy   (e.g. {{#LAUNCHED}})
 //   {{^key}}…{{/key}}         render only if key is falsy    (e.g. {{^LAUNCHED}})
 // Everything else in src/ (except _partials) is copied as-is.
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -80,7 +81,7 @@ function schemaFor(page, html) {
   }
 }
 
-const pages = [];
+const pages = [], htmlFiles = [];
 fs.rmSync(OUT, { recursive: true, force: true });
 (function walk(dir) {
   for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -102,7 +103,7 @@ fs.rmSync(OUT, { recursive: true, force: true });
     const ld = schemaFor(page, html);
     if (ld) html = html.replace('</head>', `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n</head>`);
     fs.writeFileSync(dest, html);
-    pages.push(page);
+    pages.push(page); htmlFiles.push(dest);
   }
 })(SRC);
 
@@ -120,5 +121,23 @@ fs.writeFileSync(path.join(OUT, 'site.webmanifest'), JSON.stringify({
   background_color: '#F5EFE4', theme_color: '#F5EFE4',
   icons: [192, 512].map(s => ({ src: `/assets/icons/icon-${s}.png`, sizes: `${s}x${s}`, type: 'image/png' })),
 }, null, 2));
+
+// ---- cache busting: every asset URL gets ?v=<content hash>, so each deploy is picked up immediately
+// (assets are cached for a week; a changed file gets a new URL, an unchanged one keeps its cache)
+const hashes = new Map();
+const version = url => {
+  const file = path.join(OUT, url);
+  if (!fs.existsSync(file)) return null;
+  if (!hashes.has(url)) hashes.set(url, crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex').slice(0, 10));
+  return hashes.get(url);
+};
+const ASSET = /(\/(?:assets\/[\w\-/.]+|favicon\.(?:ico|svg)|apple-touch-icon\.png|site\.webmanifest))(?![\w\-/.?])/g;
+const unversioned = [];
+for (const file of [path.join(OUT, 'site.webmanifest'), ...htmlFiles]) { // manifest first: pages link to it by its final hash
+  const src = fs.readFileSync(file, 'utf8').replace(/<!--[\s\S]*?-->/g, m => m.replace(/\//g, '\u0000')); // leave commented-out URLs alone
+  const out = src.replace(ASSET, (m, url) => { const v = version(url); if (!v) { unversioned.push(`${path.relative(OUT, file)}: ${url}`); return m; } return `${url}?v=${v}`; });
+  fs.writeFileSync(file, out.replace(/\u0000/g, '/'));
+}
+if (unversioned.length) throw new Error('Asset URLs with no matching file (fix the path):\n  ' + unversioned.join('\n  '));
 
 console.log(`Built ${pages.length} pages → dist/ (LAUNCHED: ${config.LAUNCHED})`);

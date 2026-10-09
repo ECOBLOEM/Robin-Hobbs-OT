@@ -27,6 +27,7 @@ No frameworks, no dependencies at build time. `tools/build.mjs` (plain Node) tur
 - `{{phone}}` inserts a value from `site.config.js`
 - `{{#LAUNCHED}}…{{/LAUNCHED}}` / `{{^LAUNCHED}}…{{/LAUNCHED}}` show content only when launched / not launched
 - Front matter at the top of each page sets its `title` and `description`
+- Every asset URL (CSS, JS, fonts, images, icons, manifest) gets `?v=<content hash>`, so a deploy is picked up straight away even though `/assets/*` is cached for a week. The build fails if a referenced asset doesn't exist.
 
 ```
 site.config.js        settings + the LAUNCHED switch

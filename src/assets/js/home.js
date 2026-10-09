@@ -326,7 +326,9 @@ function frame() {
   camera(s);
   hero.classList.toggle('leafy', s >= 1.4);
   hero.classList.toggle('done', cur === 5); // hides "Scroll to grow"
-  sprout.style.opacity = (1 - clamp((s - .55) / .35)).toFixed(2);
+  // the seedling hands over to the trunk: gone completely by the time the trunk starts rising (s .45)
+  const sp = 1 - clamp((s - .3) / .15);
+  sprout.style.opacity = sp.toFixed(2); sprout.style.visibility = sp > 0 ? '' : 'hidden';
   lede.style.opacity = narrow.matches ? (1 - clamp((s - .15) / .7)).toFixed(2) : '';
   setBird(reduce ? 1 : s >= 6.25 ? 2 : s >= 5.25 ? 1 : s < 5.05 ? 0 : bTarget);
   release(s, now);
