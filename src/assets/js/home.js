@@ -65,11 +65,16 @@ const sprout = document.getElementById('sprout');
 
 /* ===== FOLIAGE: layered organic clusters — soft outer edge, shadow side, mid tone, light side, single leaves ===== */
 const GREEN = {light: '#A9BF8E', mid: '#7E9C76', dark: '#4C6F55'};
-const blob = (cx, cy, r, lobes, amp) => {
-  const ph = rnd() * 6.3, pts = [];
-  for (let i = 0; i < 30; i++) { const a = i / 30 * Math.PI * 2, rr = r * (1 + amp * Math.abs(Math.sin(a * lobes / 2 + ph)) - amp * .5 + (rnd() - .5) * amp * .5); pts.push([cx + Math.cos(a) * rr, cy + Math.sin(a) * rr * .9]); }
+const blob = (cx, cy, r, lobes, amp, rot = 0, sq = .9) => { // sq squashes, rot turns the squashed shape
+  const ph = rnd() * 6.3, pts = [], cr = Math.cos(rot), sr = Math.sin(rot);
+  for (let i = 0; i < 30; i++) {
+    const a = i / 30 * Math.PI * 2, rr = r * (1 + amp * Math.abs(Math.sin(a * lobes / 2 + ph)) - amp * .5 + (rnd() - .5) * amp * .5);
+    const lx = Math.cos(a) * rr, ly = Math.sin(a) * rr * sq;
+    pts.push([cx + lx * cr - ly * sr, cy + lx * sr + ly * cr]);
+  }
   return smooth(pts, true);
 };
+const vary = (a, b) => a + rnd() * (b - a);
 const LEAF = 'M0 0C3.8-4.6 4-11.5 0-17C-4-11.5-3.8-4.6 0 0Z';
 const clusters = [
   {s: 1, pts: [[410, 380], [195, 355], [425, 360], [180, 340]]},
@@ -85,13 +90,15 @@ clusters.forEach(c => c.pts.forEach(([x, y]) => {
   tuft.style.transformOrigin = `${x}px ${y + 34}px`;
   tuft.style.animationDuration = (3.4 + Math.random() * 1.8).toFixed(2) + 's';
   tuft.style.animationDelay = (-Math.random() * 5).toFixed(2) + 's';
-  const R = 46 + rnd() * 10;
-  [[x, y, R * 1.08, 11, .1, GREEN.mid, .28],    // soft outer edge
-   [x + 5, y + 7, R, 11, .12, GREEN.dark, 1],    // shadow side (lower right)
-   [x - 3, y - 2, R * .82, 10, .12, GREEN.mid, 1],
-   [x - 11, y - 13, R * .5, 8, .14, GREEN.light, .95] // light side (upper left)
-  ].forEach(([bx, by, r, lobes, amp, fill, op], k) => addLeaf(mk('path', {d: blob(bx, by, r, lobes, amp), fill, opacity: op}, tuft), c.s, k * .06 + rnd() * .12));
-  for (let k = 0; k < 3; k++) { // single leaves on the outline, mostly the upper and outer side
+  // every cluster gets its own size, tilt, squash, leafiness and light patch, so the canopy doesn't look stamped
+  const R = vary(38, 58), rot = vary(-.45, .45), sq = vary(.76, .98), lobes = Math.round(vary(8, 13)), amp = vary(.08, .15);
+  const la = vary(-2.6, -2), ld = R * vary(.18, .34); // light patch: upper left, at a slightly different spot each time
+  [[x, y, R * vary(1.05, 1.12), lobes, amp * .8, GREEN.mid, vary(.22, .34)],                    // soft outer edge
+   [x + R * vary(.06, .16), y + R * vary(.1, .2), R, lobes, amp, GREEN.dark, 1],               // shadow side (lower right)
+   [x - R * .06, y - R * .04, R * vary(.76, .88), lobes - 1, amp, GREEN.mid, 1],
+   [x + Math.cos(la) * ld, y + Math.sin(la) * ld, R * vary(.4, .6), Math.max(6, lobes - 3), amp * 1.2, GREEN.light, .95] // light side
+  ].forEach(([bx, by, r, lb, am, fill, op], k) => addLeaf(mk('path', {d: blob(bx, by, r, lb, am, rot + vary(-.15, .15), sq), fill, opacity: op}, tuft), c.s, k * .06 + rnd() * .12));
+  for (let k = 0, n = 2 + Math.floor(rnd() * 3); k < n; k++) { // 2–4 single leaves on the outline, mostly the upper and outer side
     const a = -Math.PI / 2 + (rnd() - .5) * Math.PI * 1.6, px = x + Math.cos(a) * R * .98, py = y + Math.sin(a) * R * .86;
     const at = mk('g', {transform: `translate(${f1(px)} ${f1(py)}) rotate(${(a * 57.3 + 90).toFixed(0)}) scale(${(.8 + rnd() * .5).toFixed(2)})`}, tuft);
     addLeaf(mk('path', {d: LEAF, fill: k % 2 ? GREEN.light : GREEN.mid}, at), c.s, .25 + rnd() * .2);
