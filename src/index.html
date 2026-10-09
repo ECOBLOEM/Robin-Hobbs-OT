@@ -144,8 +144,11 @@ schema: business
   <div class="wrap grid">
     <div style="position:relative" class="rv">
       <div class="portrait">
-        <!-- Replace with: <img src="/assets/img/robin.webp" alt="Robin Hobbs, occupational therapist" width="800" height="1000"> -->
-        <em>photo of Robin</em>
+        <!-- portrait: regenerate sizes with `node tools/make-portrait.mjs`; below the fold, so it lazy-loads -->
+        <picture>
+          <source type="image/webp" srcset="/assets/img/robin-400.webp 400w, /assets/img/robin-640.webp 640w, /assets/img/robin-900.webp 900w" sizes="(max-width: 860px) calc(100vw - 32px), 500px">
+          <img src="/assets/img/robin-640.jpg" srcset="/assets/img/robin-400.jpg 400w, /assets/img/robin-640.jpg 640w, /assets/img/robin-900.jpg 900w" sizes="(max-width: 860px) calc(100vw - 32px), 500px" width="900" height="1125" alt="Robin Hobbs, occupational therapist" loading="lazy" decoding="async">
+        </picture>
       </div>
       <svg class="stamp" viewBox="0 0 120 120" aria-hidden="true">
         <defs><path id="circ" d="M60 60 m-46 0 a46 46 0 1 1 92 0 a46 46 0 1 1 -92 0"/></defs>

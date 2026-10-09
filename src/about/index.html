@@ -24,8 +24,11 @@ description: Robin Hobbs is an HPCSA-registered occupational therapist (OT 01254
 <section class="story">
   <div class="wrap">
     <div class="portrait">
-      <!-- Replace with: <img src="/assets/img/robin.webp" alt="Robin Hobbs, occupational therapist" width="800" height="1000"> -->
-      <em>photo of Robin</em>
+      <!-- portrait: regenerate sizes with `node tools/make-portrait.mjs`; in the first screen on desktop, so not lazy (it would delay the main image) -->
+      <picture>
+        <source type="image/webp" srcset="/assets/img/robin-400.webp 400w, /assets/img/robin-640.webp 640w, /assets/img/robin-900.webp 900w" sizes="(max-width: 860px) min(calc(100vw - 32px), 360px), 480px">
+        <img src="/assets/img/robin-640.jpg" srcset="/assets/img/robin-400.jpg 400w, /assets/img/robin-640.jpg 640w, /assets/img/robin-900.jpg 900w" sizes="(max-width: 860px) min(calc(100vw - 32px), 360px), 480px" width="900" height="1125" alt="Robin Hobbs, occupational therapist" decoding="async">
+      </picture>
     </div>
     <article>
       <p class="big">I studied psychology before I studied occupational therapy — and I’ve kept both ways of seeing people.</p>

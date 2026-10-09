@@ -99,7 +99,8 @@ Netlify Forms, form name `contact`, honeypot `bot-field`, success page `/thanks.
 - [ ] Rooms address in Modimolle → `rooms`
 - [ ] Practice email (optional) → `email`
 - [ ] Domain → `siteUrl` + Netlify domain settings
-- [ ] Robin's portrait + room photos (`src/assets/img/`, see comments in `src/index.html` and `src/about/index.html`)
+- [x] Robin's portrait (original in `src/assets/img/_originals/robin.jpg`; to replace it, swap that file and run `node tools/make-portrait.mjs`, adjusting `CROP` if the framing changes)
+- [ ] Photos of the rooms (`src/assets/img/`)
 - [ ] Robin to review the About page story in her own words
 - [ ] Confirm the cancellation policy (`src/faq/`, marked TODO)
 - [ ] Exact opening date (optional countdown on the ribbon)
