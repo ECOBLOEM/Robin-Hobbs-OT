@@ -48,13 +48,17 @@ body:has(.ribbon){--ribbon-h:38px}
 .hero li span{display:none;font-size:.98rem;color:var(--ink-soft);max-width:38ch;margin-top:.2rem}
 .hero li.cur span{display:block;animation:capIn .45s cubic-bezier(.2,.7,.2,1)}
 @keyframes capIn{from{opacity:0;transform:translateY(6px)}}
-.hero .hint{margin-top:var(--sp-3);font-size:.85rem;color:var(--ink-soft)}
+.hero .hint{margin-top:var(--sp-3);font-size:.85rem;color:var(--ink-soft);transition:opacity .4s}
+.hero.done .hint,.hero.done .lede::after{opacity:0} /* the tree is grown: nothing left to scroll for */
 .hero .hint::before{content:"↓";display:inline-block;margin-right:.5rem;color:var(--terra);animation:nudge 1.6s ease-in-out infinite}
 @keyframes nudge{50%{transform:translateY(4px)}}
 .tree-wrap{height:calc(100% - 2rem);min-height:0}
 #tree{width:100%;height:100%;display:block}
 #tree .leaf{transform-box:fill-box;transform-origin:center;transform:scale(0);transition:transform .6s cubic-bezier(.3,1.6,.5,1)}
 #tree .leaf.on{transform:scale(1)}
+#sprout{transform-box:view-box;transform-origin:300px 607px;animation:sprout-sway 5s ease-in-out infinite;animation-play-state:paused;transition:opacity .3s}
+.hero.live #sprout{animation-play-state:running}
+@keyframes sprout-sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2.5deg)}}
 #tree .bloom{transform-box:fill-box;transform-origin:center;transform:scale(0);transition:transform .5s cubic-bezier(.3,1.7,.5,1)}
 #tree .bloom.on{transform:scale(1)}
 /* short desktop windows: tighten the left column so the list never runs off the bottom */
@@ -90,7 +94,7 @@ body:has(.ribbon){--ribbon-h:38px}
   .hero li span,.hero li.cur span{display:block;grid-column:1/-1;font-size:1rem;line-height:1.5;margin-top:.45rem;max-width:none;animation:none}
   /* while the tree is only roots, the lede sits in the empty sky, then fades as the trunk rises */
   .hero .lede{grid-row:3;grid-column:1;align-self:start;z-index:1;margin-top:.6rem;font-size:1.02rem;max-width:34ch;pointer-events:none}
-  .hero .lede::after{content:"Scroll to grow ↓";display:block;margin-top:.5rem;font-size:.85rem;color:var(--terra-ink)}
+  .hero .lede::after{content:"Scroll to grow ↓";display:block;margin-top:.5rem;transition:opacity .4s;font-size:.85rem;color:var(--terra-ink)}
   .hero .steps-label,.hero .hint{display:none}
 }
 @media(max-width:860px) and (max-height:680px){.hero .copy > .eyebrow:first-child{display:none}.hero .lede{font-size:.95rem;max-width:none;margin-top:.6rem}.hero .lede::after{margin-top:.4rem}.hero li b{font-size:1.25rem}.hero li span,.hero li.cur span{font-size:.95rem;margin-top:.3rem}}

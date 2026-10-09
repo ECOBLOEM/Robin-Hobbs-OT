@@ -21,7 +21,56 @@ const progressOf = el => { const r = el.getBoundingClientRect(); return clamp(-r
 /* ===== TREE (same look as before) ===== */
 const branches = [...treeSvg.querySelectorAll('.br')];
 branches.forEach(b => { const L = b.getTotalLength(); b.style.strokeDasharray = L; b.style.strokeDashoffset = L; b.dataset.l = L; });
-const LEAF_COLS = ['#7E9C76', '#5E8466', '#A3B98A', '#2F4A3A'];
+let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+const f1 = n => n.toFixed(1);
+/* smooth curve through points (Catmull-Rom → cubic Bézier); closed for leaf clusters, open for the ground */
+function smooth(pts, closed) {
+  const n = pts.length, at = i => pts[closed ? (i + n) % n : Math.max(0, Math.min(n - 1, i))];
+  let d = `M${f1(pts[0][0])} ${f1(pts[0][1])}`;
+  for (let i = 0; i < (closed ? n : n - 1); i++) {
+    const p0 = at(i - 1), p1 = at(i), p2 = at(i + 1), p3 = at(i + 2);
+    d += `C${f1(p1[0] + (p2[0] - p0[0]) / 6)} ${f1(p1[1] + (p2[1] - p0[1]) / 6)} ${f1(p2[0] - (p3[0] - p1[0]) / 6)} ${f1(p2[1] - (p3[1] - p1[1]) / 6)} ${f1(p2[0])} ${f1(p2[1])}`;
+  }
+  return closed ? d + 'Z' : d;
+}
+
+/* ===== GROUND: a hand-drawn soil line with crumbs and grass, soil that fades out (no hard edges) ===== */
+const groundY = x => 606 + 1.5 * Math.sin((x - 300) / 23) + .9 * Math.sin((x - 300) / 8.7);
+{
+  const line = []; for (let x = 60; x <= 540; x += 12) line.push([x, groundY(x)]);
+  const top = smooth(line, false);
+  const soil = document.getElementById('soil'), groundTop = document.getElementById('groundTop');
+  mk('path', {d: `${top}L540 722L60 722Z`, fill: 'url(#soilFade)'}, soil);
+  const CRUMB = ['#8A6A4E', '#B59A78', '#6E5440'];
+  for (let i = 0, made = 0; made < 46 && i < 400; i++) {
+    const x = 300 + (rnd() - .5) * 400, y = 611 + rnd() * 70;
+    if (((x - 300) / 205) ** 2 + ((y - 606) / 76) ** 2 > 1) continue;
+    made++;
+    if (rnd() < .7) mk('ellipse', {cx: f1(x), cy: f1(y), rx: f1(.8 + rnd() * 2.2), ry: f1(.6 + rnd() * 1.4), fill: CRUMB[made % 3], opacity: f1(.25 + rnd() * .35)}, soil);
+    else mk('path', {d: `M${f1(x)} ${f1(y)}h${f1(3 + rnd() * 5)}`, stroke: '#6E5440', 'stroke-width': .9, 'stroke-linecap': 'round', opacity: .3}, soil);
+  }
+  mk('path', {d: top, fill: 'none', stroke: '#2B2620', 'stroke-opacity': .8, 'stroke-width': 2.2, 'stroke-linecap': 'round'}, groundTop);
+  // a second, lighter pencil pass under the line, broken in places
+  [[150, 262], [338, 452]].forEach(([a, b]) => { const pts = []; for (let x = a; x <= b; x += 14) pts.push([x, groundY(x) + 3.2]); mk('path', {d: smooth(pts, false), fill: 'none', stroke: '#2B2620', 'stroke-width': 1, 'stroke-linecap': 'round', opacity: .22}, groundTop); });
+  const BLADE = ['#7E9C76', '#5E8466', '#A3B98A'];
+  [[132, .8], [174, 1.1], [226, .7], [262, .55], [346, .6], [384, 1], [430, .85], [470, .7]].forEach(([bx, size]) => {
+    const n = 3 + Math.floor(rnd() * 3);
+    for (let k = 0; k < n; k++) {
+      const x = bx + (k - n / 2) * 2.4, y = groundY(x) + 1, h = (9 + rnd() * 13) * size, lean = (rnd() - .5) * 12 + (k - n / 2) * 2;
+      mk('path', {d: `M${f1(x)} ${f1(y)}Q${f1(x + lean * .25)} ${f1(y - h * .6)} ${f1(x + lean)} ${f1(y - h)}`, fill: 'none', stroke: BLADE[(k + bx) % 3], 'stroke-width': f1(1.4 + rnd() * .8), 'stroke-linecap': 'round'}, groundTop);
+    }
+  });
+}
+const sprout = document.getElementById('sprout');
+
+/* ===== FOLIAGE: layered organic clusters — soft outer edge, shadow side, mid tone, light side, single leaves ===== */
+const GREEN = {light: '#A9BF8E', mid: '#7E9C76', dark: '#4C6F55'};
+const blob = (cx, cy, r, lobes, amp) => {
+  const ph = rnd() * 6.3, pts = [];
+  for (let i = 0; i < 30; i++) { const a = i / 30 * Math.PI * 2, rr = r * (1 + amp * Math.abs(Math.sin(a * lobes / 2 + ph)) - amp * .5 + (rnd() - .5) * amp * .5); pts.push([cx + Math.cos(a) * rr, cy + Math.sin(a) * rr * .9]); }
+  return smooth(pts, true);
+};
+const LEAF = 'M0 0C3.8-4.6 4-11.5 0-17C-4-11.5-3.8-4.6 0 0Z';
 const clusters = [
   {s: 1, pts: [[410, 380], [195, 355], [425, 360], [180, 340]]},
   {s: 2, pts: [[440, 250], [165, 235], [455, 230], [150, 215], [420, 270]]},
@@ -30,17 +79,22 @@ const clusters = [
 ];
 const leavesG = document.getElementById('leaves');
 const leafEls = [];
-let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+const addLeaf = (el, s, delay) => { el.classList.add('leaf'); el.style.transitionDelay = delay.toFixed(2) + 's'; el.dataset.s = s; leafEls.push(el); };
 clusters.forEach(c => c.pts.forEach(([x, y]) => {
   const tuft = mk('g', {class: 'tuft'}, leavesG); // sways around its own base
   tuft.style.transformOrigin = `${x}px ${y + 34}px`;
   tuft.style.animationDuration = (3.4 + Math.random() * 1.8).toFixed(2) + 's';
   tuft.style.animationDelay = (-Math.random() * 5).toFixed(2) + 's';
-  for (let k = 0; k < 5; k++) {
-    const r = 18 + rnd() * 22;
-    const el = mk('circle', {cx: x + (rnd() - .5) * 60, cy: y + (rnd() - .5) * 50, r, fill: LEAF_COLS[Math.floor(rnd() * 4)], opacity: .9, class: 'leaf'}, tuft);
-    el.style.transitionDelay = (rnd() * .35) + 's';
-    el.dataset.s = c.s; leafEls.push(el);
+  const R = 46 + rnd() * 10;
+  [[x, y, R * 1.08, 11, .1, GREEN.mid, .28],    // soft outer edge
+   [x + 5, y + 7, R, 11, .12, GREEN.dark, 1],    // shadow side (lower right)
+   [x - 3, y - 2, R * .82, 10, .12, GREEN.mid, 1],
+   [x - 11, y - 13, R * .5, 8, .14, GREEN.light, .95] // light side (upper left)
+  ].forEach(([bx, by, r, lobes, amp, fill, op], k) => addLeaf(mk('path', {d: blob(bx, by, r, lobes, amp), fill, opacity: op}, tuft), c.s, k * .06 + rnd() * .12));
+  for (let k = 0; k < 3; k++) { // single leaves on the outline, mostly the upper and outer side
+    const a = -Math.PI / 2 + (rnd() - .5) * Math.PI * 1.6, px = x + Math.cos(a) * R * .98, py = y + Math.sin(a) * R * .86;
+    const at = mk('g', {transform: `translate(${f1(px)} ${f1(py)}) rotate(${(a * 57.3 + 90).toFixed(0)}) scale(${(.8 + rnd() * .5).toFixed(2)})`}, tuft);
+    addLeaf(mk('path', {d: LEAF, fill: k % 2 ? GREEN.light : GREEN.mid}, at), c.s, .25 + rnd() * .2);
   }
 }));
 
@@ -66,6 +120,7 @@ new IntersectionObserver(([e]) => hero.classList.toggle('live', e.isIntersecting
 const TOP = [[0, 430], [1, 300], [1.5, 200], [2.5, 125], [3.5, 70], [4.5, 22], [5, 10]];
 const topAt = s => { for (let i = 1; i < TOP.length; i++) if (s <= TOP[i][0]) { const [a, ya] = TOP[i - 1], [b, yb] = TOP[i]; return lerp(ya, yb, (s - a) / (b - a)); } return TOP.at(-1)[1]; };
 let aspect = 1;
+const fadeX = document.getElementById('fadeX');
 const measure = () => { aspect = treeSvg.clientWidth / Math.max(1, treeSvg.clientHeight) || 1; };
 function camera(s) {
   const bottom = 714, needW = lerp(250, 460, clamp(s / 4.5));
@@ -73,6 +128,7 @@ function camera(s) {
   h = Math.max(h, needW / aspect);
   const w = h * aspect;
   treeSvg.setAttribute('viewBox', `${(300 - w / 2).toFixed(1)} ${(bottom - h).toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}`);
+  fadeX.setAttribute('x1', Math.max(60, 300 - w / 2).toFixed(1)); fadeX.setAttribute('x2', Math.min(540, 300 + w / 2).toFixed(1));
 }
 
 /* ===== robin: lands at "Independence", flies off with the seeds at the end ===== */
@@ -130,13 +186,23 @@ function drawSeed(ctx, color, scale) {
   }
   ctx.restore();
 }
-function makeSprite(color, word) {
-  const s = sky.dpr, w = word ? 140 : 44, h = word ? 76 : 50;
+function makeSprite(color) {
+  const s = sky.dpr, w = 44, h = 50;
   const c = document.createElement('canvas'); c.width = w * s; c.height = h * s;
   const x = c.getContext('2d'); x.scale(s, s); x.translate(w / 2, 24);
   drawSeed(x, color, 1);
-  if (word) { x.font = '600 17px Caveat, cursive'; x.textAlign = 'center'; x.fillStyle = 'rgba(166,75,37,.9)'; x.fillText(word, 0, 42); }
   return {c, w, h, ox: w / 2, oy: 24};
+}
+/* the handwritten word hangs under its seed, on a soft paper-coloured halo so it reads over anything */
+function makeWordSprite(word) {
+  const s = sky.dpr, w = 150, h = 36;
+  const c = document.createElement('canvas'); c.width = w * s; c.height = h * s;
+  const x = c.getContext('2d'); x.scale(s, s);
+  x.font = '600 17px Caveat, cursive'; x.textAlign = 'center'; x.lineJoin = 'round';
+  x.shadowColor = 'rgba(245,239,228,.95)'; x.shadowBlur = 9;
+  x.strokeStyle = 'rgba(245,239,228,.92)'; x.lineWidth = 6; x.strokeText(word, w / 2, 24);
+  x.shadowBlur = 0; x.fillStyle = 'rgba(166,75,37,.95)'; x.fillText(word, w / 2, 24);
+  return {c, w, h, ox: w / 2, oy: 24 - 42, hw: Math.min(w, x.measureText(word).width + 16) / 2}; // baseline 42px under the seed
 }
 function setupSky() {
   if (reduce || sky.canvas) return;
@@ -148,7 +214,7 @@ function setupSky() {
   size(); addEventListener('resize', size);
   (document.fonts ? document.fonts.load('600 17px Caveat') : Promise.resolve()).catch(() => {}).then(() => {
     sky.sprites = FLUFF.map(col => makeSprite(col));
-    sky.wordSprites = WORDS.map((wd, i) => makeSprite(FLUFF[i % FLUFF.length], wd));
+    sky.wordSprites = WORDS.map(makeWordSprite);
     sky.ready = true;
   });
   if (fine) addEventListener('pointermove', e => { sky.userWind = clamp(sky.userWind + e.movementX * .012, -1.6, 1.6); }, {passive: true});
@@ -163,12 +229,28 @@ function spawnSeed(now, word) {
   sky.seeds.push({
     x: p.x + (Math.random() - .5) * 16, y: p.y, vx: -.2, vy: -.15, born: now, life: (wordSprite ? 20000 : 15000) + Math.random() * 5000,
     k: wordSprite ? .75 : .8 + Math.random() * .5, phase: Math.random() * 6.28,
-    spr: wordSprite || sky.sprites[Math.floor(Math.random() * sky.sprites.length)],
-    sc: wordSprite ? 1 : .8 + Math.random() * .45, word: !!wordSprite,
+    spr: sky.sprites[Math.floor(Math.random() * sky.sprites.length)],
+    sc: wordSprite ? 1 : .8 + Math.random() * .45, word: wordSprite, wa: 0,
   });
+}
+/* words only show in open sky: not over the canopy (an ellipse inside its box), the headline or the caption card */
+const caption = hero.querySelector('.caption'), heading = hero.querySelector('h1'), stage = hero.querySelector('.stage');
+function obstacles() {
+  const l = leavesG.getBoundingClientRect(), st = stage.getBoundingClientRect();
+  return {ell: {cx: l.left + l.width / 2, cy: l.top + l.height / 2, rx: l.width / 2, ry: l.height / 2},
+    rects: [caption, heading].map(e => e.getBoundingClientRect()).filter(r => r.width),
+    area: {left: 4, right: innerWidth - 4, top: Math.max(st.top, 0), bottom: Math.min(st.bottom, innerHeight)}}; // whole word on screen, inside the hero
+}
+function inOpenSky(d, ob) {
+  const hw = d.word.hw * d.sc, cx = d.x, cy = d.y + 36 * d.sc, hh = 12, pad = 8;
+  const {ell, area} = ob, rx = ell.rx + hw + pad, ry = ell.ry + hh + pad;
+  if (cx - hw < area.left || cx + hw > area.right || cy - hh < area.top || cy + hh > area.bottom) return false;
+  if (ell.rx && ((cx - ell.cx) / rx) ** 2 + ((cy - ell.cy) / ry) ** 2 < 1) return false;
+  return !ob.rects.some(r => cx + hw + pad > r.left && cx - hw - pad < r.right && cy + hh + pad > r.top && cy - hh - pad < r.bottom);
 }
 function skyFrame(now) {
   const S = sky, ctx = S.ctx, dt = clamp((now - S.last) / 16.7, 0, 3); S.last = now;
+  let ob = null; // measured once per frame, only if a word seed is on screen
   // wind: gentle base breeze to the left + slow gusts + the visitor (mouse on desktop, swipe speed on phones)
   const v = scrollY - S.lastY; S.lastY = scrollY; S.scrollV = lerp(S.scrollV, v, .3);
   if (!fine) S.userWind = clamp(S.userWind - Math.abs(S.scrollV) * .01 * dt, -1.6, 1.6);
@@ -193,6 +275,10 @@ function skyFrame(now) {
     ctx.setTransform(S.dpr * d.sc * Math.cos(rot), S.dpr * d.sc * Math.sin(rot), -S.dpr * d.sc * Math.sin(rot), S.dpr * d.sc * Math.cos(rot), d.x * S.dpr, d.y * S.dpr);
     ctx.globalAlpha = a;
     ctx.drawImage(d.spr.c, -d.spr.ox, -d.spr.oy, d.spr.w, d.spr.h);
+    if (d.word) {
+      d.wa += ((inOpenSky(d, ob ||= obstacles()) ? 1 : 0) - d.wa) * clamp(.1 * dt);
+      if (d.wa > .02) { ctx.globalAlpha = a * d.wa; ctx.drawImage(d.word.c, -d.word.ox, -d.word.oy, d.word.w, d.word.h); }
+    }
   }
   ctx.globalAlpha = 1;
   if (S.seeds.length || S.queue > 0) requestAnimationFrame(skyFrame); else { S.running = false; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, S.canvas.width, S.canvas.height); }
@@ -215,7 +301,7 @@ function stillSeeds() {
     mk('ellipse', {cy: 16, rx: 1.8, ry: 3.8, fill: '#8A6A4E'}, s);
     const f = mk('g', {stroke: FLUFF[i % FLUFF.length], 'stroke-width': .85, 'stroke-linecap': 'round'}, s);
     for (let a = -78; a <= 78; a += 13) { const q = a * Math.PI / 180; mk('path', {d: `M0 -6 L${(Math.sin(q) * 13).toFixed(1)} ${(-6 - Math.cos(q) * 13).toFixed(1)}`}, f); }
-    if (word) { const t = mk('text', {y: 44, 'text-anchor': 'middle', 'font-family': 'Caveat, cursive', 'font-weight': 600, 'font-size': 24, fill: '#A64B25', transform: `rotate(${-r * 57})`}, s); t.textContent = word; }
+    if (word) { const t = mk('text', {y: 44, 'text-anchor': 'middle', 'font-family': 'Caveat, cursive', 'font-weight': 600, 'font-size': 24, fill: '#A64B25', stroke: '#F5EFE4', 'stroke-width': 6, 'stroke-linejoin': 'round', 'paint-order': 'stroke', transform: `rotate(${-r * 57})`}, s); t.textContent = word; }
   });
 }
 
@@ -232,6 +318,8 @@ function frame() {
   if (meterNum.textContent !== String(cur + 1)) meterNum.textContent = cur + 1;
   camera(s);
   hero.classList.toggle('leafy', s >= 1.4);
+  hero.classList.toggle('done', cur === 5); // hides "Scroll to grow"
+  sprout.style.opacity = (1 - clamp((s - .55) / .35)).toFixed(2);
   lede.style.opacity = narrow.matches ? (1 - clamp((s - .15) / .7)).toFixed(2) : '';
   setBird(reduce ? 1 : s >= 6.25 ? 2 : s >= 5.25 ? 1 : s < 5.05 ? 0 : bTarget);
   release(s, now);

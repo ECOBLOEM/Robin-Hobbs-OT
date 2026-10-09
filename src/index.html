@@ -34,10 +34,18 @@ schema: business
     </div>
     <div class="tree-wrap">
     <svg id="tree" viewBox="0 0 600 712" role="img" aria-label="A tree grows from its roots to full bloom; at the end it releases seeds into the wind and a robin flies off with them">
-      <!-- underground cut-away: seed + roots (step 1, assessment) -->
-      <path d="M118 606 H482 C474 664 404 704 300 704 C196 704 126 664 118 606Z" fill="#2B2620" opacity=".045"/>
-      <g fill="#CDBFA6" opacity=".7"><ellipse cx="190" cy="640" rx="7" ry="4"/><ellipse cx="420" cy="652" rx="5" ry="3"/><ellipse cx="248" cy="684" rx="4" ry="2.5"/><ellipse cx="372" cy="690" rx="6" ry="3.5"/></g>
-      <ellipse id="seedling" cx="300" cy="616" rx="9" ry="6" fill="#C9A15A"/>
+      <defs>
+        <linearGradient id="soilFade" gradientUnits="userSpaceOnUse" x1="0" y1="606" x2="0" y2="672">
+          <stop offset="0" stop-color="#8A6A4E" stop-opacity=".2"/><stop offset=".4" stop-color="#8A6A4E" stop-opacity=".07"/><stop offset="1" stop-color="#8A6A4E" stop-opacity="0"/>
+        </linearGradient>
+        <!-- the ground dissolves at the edges of whatever the camera shows (x1/x2 follow the camera in home.js) -->
+        <linearGradient id="fadeX" gradientUnits="userSpaceOnUse" x1="60" y1="0" x2="540" y2="0">
+          <stop offset="0" stop-color="#000"/><stop offset=".2" stop-color="#fff"/><stop offset=".8" stop-color="#fff"/><stop offset="1" stop-color="#000"/>
+        </linearGradient>
+        <mask id="groundMask" maskUnits="userSpaceOnUse" x="-300" y="380" width="1200" height="360"><rect x="-300" y="380" width="1200" height="360" fill="url(#fadeX)"/></mask>
+      </defs>
+      <!-- ground (drawn by home.js): soft soil that fades out, crumbs, then roots (step 1, assessment) -->
+      <g id="soil" mask="url(#groundMask)"></g>
       <g fill="none" stroke="#5B4636" stroke-linecap="round" opacity=".85">
         <path class="br root" data-s="0" data-d=".8" stroke-width="9" d="M300 606 C296 630 282 646 258 660 C240 670 222 674 204 684"/>
         <path class="br root" data-s=".05" data-d=".8" stroke-width="9" d="M300 606 C306 632 322 648 346 658 C366 666 384 670 402 680"/>
@@ -47,8 +55,15 @@ schema: business
         <path class="br root" data-s=".45" data-d=".55" stroke-width="3" d="M258 660 C252 672 252 682 256 692"/>
         <path class="br root" data-s=".5" data-d=".5" stroke-width="3" d="M346 658 C356 670 360 680 358 690"/>
       </g>
-      <ellipse cx="300" cy="606" rx="190" ry="16" fill="#2B2620" opacity=".08"/>
-      <path d="M140 606 H460" stroke="#2B2620" stroke-width="2" stroke-linecap="round"/>
+      <!-- hand-drawn soil line + grass tufts (drawn by home.js) -->
+      <g id="groundTop" mask="url(#groundMask)"></g>
+      <!-- the seedling already breaking through at scroll 0; fades as the trunk takes over -->
+      <g id="sprout">
+        <path d="M300 607 C300 598 299 590 300.5 580" fill="none" stroke="#5E8466" stroke-width="3" stroke-linecap="round"/>
+        <path d="M300.5 582 C294 571 283 567 271 570 C276 581 289 586 300.5 582Z" fill="#7E9C76"/>
+        <path d="M301 580 C306 567 318 561 332 563 C328 576 315 583 301 580Z" fill="#A3B98A"/>
+        <path d="M299.5 581 C292 575 284 572 277 572 M302 579 C309 572 318 567 326 566" fill="none" stroke="#5E8466" stroke-width=".9" stroke-linecap="round" opacity=".55"/>
+      </g>
       <g fill="none" stroke="#5B4636" stroke-linecap="round">
         <path class="br" data-s=".45" data-d=".95" stroke-width="22" d="M300 606 C298 540 306 480 300 420 C295 370 302 320 300 260"/>
         <path class="br" data-s="1" stroke-width="11" d="M301 470 C340 450 380 420 410 380"/>
